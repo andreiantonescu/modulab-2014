@@ -69,7 +69,6 @@ void ofApp::setup(){
     
 	cam.initGrabber(camWidth, camHeight);
     
-    // tracker setup.
     tracker.setIterations(5);
     tracker.setClamp(3.0);
     tracker.setTolerance(.01);
@@ -103,23 +102,8 @@ void ofApp::update(){
 		scale = tracker.getScale();
 		orientation = tracker.getOrientation();
 		rotationMatrix = tracker.getRotationMatrix();
-        
-        objectMesh = tracker.getObjectMesh();
-		meanMesh = tracker.getMeanObjectMesh();
 	}
-    
-//    trackerSecond.update(srcTestMat);
-//    positionSecond = trackerSecond.getPosition();
-//    scaleSecond = trackerSecond.getScale();
-//    orientationSecond = trackerSecond.getOrientation();
-//    rotationMatrixSecond = trackerSecond.getRotationMatrix();
 
-//    player.update();
-//    if(player.isFrameNew()){
-//        srcTestMat = toCv(player);
-//        srcTestMat = initialFramePreproc(srcTestMat);
-//        trackerSecond.update(srcTestMat);
-//    }
     trackerSecond.update(srcTestMat);
     
     PSEye.update();
@@ -136,10 +120,10 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+    ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+    
     ofSetColor(255);
-//    ofBackground(125,125,255);
     if(debugMode){
-//
     }
     else
         cam.draw(0, 0);
@@ -154,15 +138,20 @@ void ofApp::draw(){
         }
         if(debugMode){
             
+//            mouth source face drawing
+////////////            
             mouthFbo.begin();
             ofPushMatrix();
             ofTranslate(ofVec2f(tracker.getPosition().x,tracker.getPosition().y));
             ofScale(trackerSecond.getScale()/tracker.getScale(),trackerSecond.getScale()/tracker.getScale());
+            applyMatrix(rotationMatrixSecond);
             ofxCv::drawMat(frame, -tracker.getPosition().x, -tracker.getPosition().y);
             ofPopMatrix();
             mouthFbo.end();
             
-            // get first face mouth mask fbo
+            
+//            get source face mouth mask
+////////////
             mouthMaskFbo.begin();
             ofBackground( 0, 0, 0 );
             ofPushMatrix();
@@ -184,58 +173,53 @@ void ofApp::draw(){
             ofPopMatrix();
             mouthMaskFbo.end();
             
-            ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
             
+//            draw mouth using the shaders // behind destination face
 ////////////
-            // draw mouth;
             ofPushMatrix();
             ofTranslate(120-tracker.getPosition().x, 120-tracker.getPosition().y);
             maskShader.begin();
             maskShader.setUniform1f( "time", ofGetElapsedTimef() );
             maskShader.setUniformTexture( "texture1", mouthMaskFbo.getTextureReference(), 1 );
             ofSetColor( 255, 255, 255 );
-            
             ofTranslate(ofVec2f(tracker.getPosition().x,tracker.getPosition().y));
             applyMatrix(rotationMatrix.getInverse());
             mouthFbo.draw( -tracker.getPosition().x, -tracker.getPosition().y );
-            
             maskShader.end();
             ofPopMatrix();
             
+            
+//            draw second face
 ////////////
-            /// draw second face
             ofPushMatrix();
             ofTranslate(ofVec2f(120,120));
             ofScale(trackerSecond.getScale(),trackerSecond.getScale());
             applyMatrix(rotationMatrixSecond);
             
-            ofPixels letsee;
-            toOf(srcTestMat, letsee);
-            ofImage final;
-            final.setFromPixels(letsee);
-            final.getTextureReference().bind();
-            
-//            videoTexture.bind();
+            // convert loaded image to OF for texture binding
+            ofPixels srcTestMatPixels;
+            toOf(srcTestMat, srcTestMatPixels);
+            ofImage srcTestMatOF;
+            srcTestMatOF.setFromPixels(srcTestMatPixels);
+            srcTestMatOF.getTextureReference().bind();
             ofMesh subMesh;
             subMesh = trackerSecond.getObjectMesh();
             for(int i=17; i<66; i++){ //17 / 48 /  66
                 subMesh.setVertex(i, tracker.getObjectMesh().getVertex(i));
             }
             subMesh.draw();
-            
             for(int i=17; i<66; i++){
                 ofSetColor(255,255,0);
-//                ofCircle(subMesh.getVertex(i).x, subMesh.getVertex(i).y, 0.5);
+                ofCircle(subMesh.getVertex(i).x, subMesh.getVertex(i).y, 0.5);
                 ofSetColor(0,0,255);
                 ofSetColor(255);
             }
             ofSetColor(255);
-//            videoTexture.unbind();
-            final.getTextureReference().unbind();
+            srcTestMatOF.getTextureReference().unbind();
             ofPopMatrix();
          
-////////////
-            // draw first face wireframe
+
+//            draw first face wireframe
             ofPushMatrix();
             ofTranslate(350, 120);
             ofScale(tracker.getScale(),tracker.getScale(),1.0);
@@ -247,8 +231,7 @@ void ofApp::draw(){
             tracker.getObjectMesh().drawWireframe();
             ofPopMatrix();
             
-////////////
-            // draw second face
+//            draw second face
             ofPushMatrix();
             ofTranslate(500,0);
             drawMat(srcTestMat, 0, 0);
@@ -321,29 +304,3 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
-
-// intersection test - doesn't work ?
-//faceCut.clear();
-//IntersectionData id;
-//
-//for(int i=0;i<tracker.getObjectMesh().getUniqueFaces().size();i++){
-//    IsTriangle triangle;
-//    ofMeshFace face=tracker.getObjectMesh().getUniqueFaces().at(i);
-//    triangle.set(face);
-//    
-//    for(int j=0;j<trackerSecond.getObjectMesh().getUniqueFaces().size();j++){
-//        IsTriangle triangleSecond;
-//        ofMeshFace faceSecond=trackerSecond.getObjectMesh().getUniqueFaces().at(j);
-//        triangleSecond.set(faceSecond);
-//        
-//        id = intersection.TriangleTriangleIntersection(triangle, triangleSecond);
-//        if(id.isIntersection){
-//            faceCut.addVertex(id.pos);
-//            faceCut.addVertex(id.pos+id.dir);
-//        }
-//    }
-//}
-//
-//ofTranslate(ofGetWidth()-200, 500);
-//faceCut.draw();
-//cout<<tracker.getObjectMesh().getUniqueFaces().size()<<endl;

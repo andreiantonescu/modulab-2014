@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		D97C12F91A0F8FD900BBDA1D /* expressionSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C12F71A0F8FD900BBDA1D /* expressionSwap.cpp */; };
 		D9B3033319FEF1A7004F0F8D /* Expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031019FEF1A7004F0F8D /* Expression.cpp */; };
 		D9B3033419FEF1A7004F0F8D /* ExpressionClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031219FEF1A7004F0F8D /* ExpressionClassifier.cpp */; };
 		D9B3033519FEF1A7004F0F8D /* ofxFaceTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031419FEF1A7004F0F8D /* ofxFaceTracker.cpp */; };
@@ -160,6 +161,9 @@
 
 /* Begin PBXFileReference section */
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
+		D97C12F71A0F8FD900BBDA1D /* expressionSwap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = expressionSwap.cpp; sourceTree = "<group>"; };
+		D97C12F81A0F8FD900BBDA1D /* expressionSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = expressionSwap.h; sourceTree = "<group>"; };
+		D97C12FB1A0F901600BBDA1D /* todo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = todo; sourceTree = "<group>"; };
 		D9B3031019FEF1A7004F0F8D /* Expression.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Expression.cpp; sourceTree = "<group>"; };
 		D9B3031119FEF1A7004F0F8D /* Expression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Expression.h; sourceTree = "<group>"; };
 		D9B3031219FEF1A7004F0F8D /* ExpressionClassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExpressionClassifier.cpp; sourceTree = "<group>"; };
@@ -478,6 +482,16 @@
 				BBAB23BE13894E4700AA2426 /* GLUT.framework */,
 			);
 			name = "3rd party frameworks";
+			sourceTree = "<group>";
+		};
+		D97C12FA1A0F8FDD00BBDA1D /* expressionSwap */ = {
+			isa = PBXGroup;
+			children = (
+				D97C12F71A0F8FD900BBDA1D /* expressionSwap.cpp */,
+				D97C12F81A0F8FD900BBDA1D /* expressionSwap.h */,
+			);
+			name = expressionSwap;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		D9B3030E19FEF1A7004F0F8D /* ofxFaceTracker */ = {
@@ -1057,6 +1071,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				D97C12FB1A0F901600BBDA1D /* todo */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -1070,6 +1085,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D97C12FA1A0F8FDD00BBDA1D /* expressionSwap */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
@@ -1235,6 +1251,7 @@
 				D9CE30571A054E4700D428A8 /* ofxUIImage.cpp in Sources */,
 				D9CE30831A054FD400D428A8 /* tinyxmlerror.cpp in Sources */,
 				D9CE30701A054E4700D428A8 /* ofxUITextInput.cpp in Sources */,
+				D97C12F91A0F8FD900BBDA1D /* expressionSwap.cpp in Sources */,
 				D9CE2FE51A054BE800D428A8 /* cameras.c in Sources */,
 				D9CE30741A054E4700D428A8 /* ofxUIWaveform.cpp in Sources */,
 				D9CE305E1A054E4700D428A8 /* ofxUILabelToggle.cpp in Sources */,
