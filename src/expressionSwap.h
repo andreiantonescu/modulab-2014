@@ -24,5 +24,7 @@ public:
     void setup();
     void update(cv::Mat& source, cv::Mat& dest);
     void draw(cv::Mat& frame, ofImage& destImage);
+    
+    void keyPressed(int key);
 };
 #endif /* defined(__modulab_0_1__expressionSwap__) */

@@ -89,3 +89,9 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
         destImage.getTextureReference().unbind();
         ofPopMatrix();
 }
+
+void expressionSwap::keyPressed(int key){
+    if(key == 'r'){
+        trackerSource.reset();
+    }
+}

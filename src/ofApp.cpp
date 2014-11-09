@@ -75,17 +75,10 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    if(key == 'r') {
-		tracker.reset();
-	}
+    
+    expressionSwapper.keyPressed(key);
     if(key == 'd'){
         debugMode = !debugMode;
-    }
-    if(key == ']'){
-        indexer++;
-    }
-    if(key == '['){
-        indexer--;
     }
 }
 

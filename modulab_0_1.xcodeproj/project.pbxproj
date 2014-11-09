@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		D97C12FF1A0F910B00BBDA1D /* expressionSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */; };
+		D97C130D1A0FBD6100BBDA1D /* Clone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C130B1A0FBD6100BBDA1D /* Clone.cpp */; };
+		D97C13111A0FBED300BBDA1D /* faceSwapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C130F1A0FBED300BBDA1D /* faceSwapper.cpp */; };
 		D98077161A0FA8A9008CEBD7 /* helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D98077141A0FA8A9008CEBD7 /* helpers.cpp */; };
 		D9B3033319FEF1A7004F0F8D /* Expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031019FEF1A7004F0F8D /* Expression.cpp */; };
 		D9B3033419FEF1A7004F0F8D /* ExpressionClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031219FEF1A7004F0F8D /* ExpressionClassifier.cpp */; };
@@ -166,6 +168,10 @@
 		D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = expressionSwap.cpp; path = src/expressionSwap.cpp; sourceTree = "<group>"; };
 		D97C12FE1A0F910B00BBDA1D /* expressionSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = expressionSwap.h; path = src/expressionSwap.h; sourceTree = "<group>"; };
 		D97C13091A0FAA1000BBDA1D /* genInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = genInclude.h; sourceTree = "<group>"; };
+		D97C130B1A0FBD6100BBDA1D /* Clone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clone.cpp; path = src/Clone.cpp; sourceTree = "<group>"; };
+		D97C130C1A0FBD6100BBDA1D /* Clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Clone.h; path = src/Clone.h; sourceTree = "<group>"; };
+		D97C130F1A0FBED300BBDA1D /* faceSwapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = faceSwapper.cpp; sourceTree = "<group>"; };
+		D97C13101A0FBED300BBDA1D /* faceSwapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = faceSwapper.h; sourceTree = "<group>"; };
 		D98077141A0FA8A9008CEBD7 /* helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = helpers.cpp; path = src/helpers.cpp; sourceTree = "<group>"; };
 		D98077151A0FA8A9008CEBD7 /* helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = helpers.h; path = src/helpers.h; sourceTree = "<group>"; };
 		D9B3031019FEF1A7004F0F8D /* Expression.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Expression.cpp; sourceTree = "<group>"; };
@@ -496,6 +502,25 @@
 			);
 			name = expressionSwap;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		D97C130E1A0FBD6400BBDA1D /* Clone */ = {
+			isa = PBXGroup;
+			children = (
+				D97C130B1A0FBD6100BBDA1D /* Clone.cpp */,
+				D97C130C1A0FBD6100BBDA1D /* Clone.h */,
+			);
+			name = Clone;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		D97C13121A0FBEDA00BBDA1D /* faceSwapper */ = {
+			isa = PBXGroup;
+			children = (
+				D97C130F1A0FBED300BBDA1D /* faceSwapper.cpp */,
+				D97C13101A0FBED300BBDA1D /* faceSwapper.h */,
+			);
+			name = faceSwapper;
 			sourceTree = "<group>";
 		};
 		D98077171A0FA8AF008CEBD7 /* helpers */ = {
@@ -1100,12 +1125,14 @@
 			isa = PBXGroup;
 			children = (
 				D97C13091A0FAA1000BBDA1D /* genInclude.h */,
+				D9B3039619FEF64F004F0F8D /* constants.h */,
+				D97C13121A0FBEDA00BBDA1D /* faceSwapper */,
+				D97C130E1A0FBD6400BBDA1D /* Clone */,
 				D98077171A0FA8AF008CEBD7 /* helpers */,
 				D97C12FA1A0F8FDD00BBDA1D /* expressionSwap */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
-				D9B3039619FEF64F004F0F8D /* constants.h */,
 				D9CE2DEC1A02F55E00D428A8 /* maskShader */,
 			);
 			path = src;
@@ -1235,6 +1262,7 @@
 				D9B3036A19FEF1DB004F0F8D /* Helpers.cpp in Sources */,
 				D9CE304D1A054E4600D428A8 /* ofxUIBaseDraws.cpp in Sources */,
 				D9CE30601A054E4700D428A8 /* ofxUIMovingGraph.cpp in Sources */,
+				D97C130D1A0FBD6100BBDA1D /* Clone.cpp in Sources */,
 				D9CE30581A054E4700D428A8 /* ofxUIImageButton.cpp in Sources */,
 				D9CE30751A054E4700D428A8 /* ofxUIWidget.cpp in Sources */,
 				D9B3033319FEF1A7004F0F8D /* Expression.cpp in Sources */,
@@ -1247,6 +1275,7 @@
 				D9B3033519FEF1A7004F0F8D /* ofxFaceTracker.cpp in Sources */,
 				D9B3033619FEF1A7004F0F8D /* CLM.cc in Sources */,
 				D9B3036C19FEF1DB004F0F8D /* RunningBackground.cpp in Sources */,
+				D97C13111A0FBED300BBDA1D /* faceSwapper.cpp in Sources */,
 				D9B3033719FEF1A7004F0F8D /* FCheck.cc in Sources */,
 				D9CE306D1A054E4700D428A8 /* ofxUISuperCanvas.cpp in Sources */,
 				D9CE30551A054E4700D428A8 /* ofxUIFPS.cpp in Sources */,

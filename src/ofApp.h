@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "genInclude.h"
 #include "expressionSwap.h"
+#include "faceSwapper.h"
 
 class ofApp : public ofBaseApp{
 
@@ -21,27 +22,13 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-        ofVideoGrabber cam; //
-        ofVideoGrabber camSecond; //
-        cv::Mat frame; //
-    
-        ofxFaceTrackerThreaded tracker;//
-        ofxFaceTrackerThreaded trackerSecond;//
-    
+        ofVideoGrabber cam;
+        cv::Mat frame;
         bool debugMode;
     
-        ofImage srcTest;
         cv::Mat srcTestMat;
-    
-/////////
-/////////
-        // mouth from test subject
-        ofFbo mouthFbo, mouthMaskFbo;
-        ofShader maskShader;
-    
-/////////
-/////////
-        // PSEye cameras
+
+//        PSEye cameras
         ofxPS3EyeGrabber PSEye;
         ofTexture videoTexture;
     
