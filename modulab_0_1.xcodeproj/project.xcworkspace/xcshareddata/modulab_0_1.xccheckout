@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7A823270-FD33-4BC2-9272-6629F46E46E6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>modulab_0_1</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>16F4DC50FBD516D469CB3C0E1BCF8F3DAE2E5B6E</key>
+		<string>https://github.com/robandrose/ofxIntersection.git</string>
+		<key>6116060B9B43ED41429AE056D680B0BE4D4D9659</key>
+		<string>https://github.com/bakercp/ofxPS3EyeGrabber.git</string>
+		<key>F69EE4DFF6EDC22AF55014347048BEBE449EBBBA</key>
+		<string>https://github.com/andreiantonescu/modulab-2014.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>modulab_0_1.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>16F4DC50FBD516D469CB3C0E1BCF8F3DAE2E5B6E</key>
+		<string>../../../../../addons/ofxIntersection</string>
+		<key>6116060B9B43ED41429AE056D680B0BE4D4D9659</key>
+		<string>../../../../../addons/ofxPS3EyeGrabber</string>
+		<key>F69EE4DFF6EDC22AF55014347048BEBE449EBBBA</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/andreiantonescu/modulab-2014.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>F69EE4DFF6EDC22AF55014347048BEBE449EBBBA</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F69EE4DFF6EDC22AF55014347048BEBE449EBBBA</string>
+			<key>IDESourceControlWCCName</key>
+			<string>modulab_0_1</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>16F4DC50FBD516D469CB3C0E1BCF8F3DAE2E5B6E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxIntersection</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6116060B9B43ED41429AE056D680B0BE4D4D9659</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxPS3EyeGrabber</string>
+		</dict>
+	</array>
+</dict>
+</plist>

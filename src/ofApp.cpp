@@ -2,41 +2,6 @@
 using namespace cv;
 using namespace ofxCv;
 
-// correct gamma helper
-cv::Mat ofApp::correctGamma(const cv::Mat& image, const unsigned int& gamma ){
-    double inverse_gamma = 1.0 / gamma;
-    
-    cv::Mat lut_matrix(1, 256, CV_8UC1 );
-    uchar * ptr = lut_matrix.ptr();
-    for( int i = 0; i < 256; i++ )
-        ptr[i] = (int)( pow( (double) i / 255.0, inverse_gamma ) * 255.0 );
-    
-    cv::Mat result;
-    cv::LUT( image, lut_matrix, result );
-    
-    return result;
-}
-
-// initial frame preproc helper
-cv::Mat ofApp::initialFramePreproc(const cv::Mat& image){
-    
-    cv::Mat gamma_corrected = correctGamma(image, initialPreprocGamma);
-    cv::Mat lab_image;
-    cv::cvtColor(gamma_corrected, lab_image, CV_BGR2HSV);
-    
-    // Extract the L channel
-    std::vector<cv::Mat> lab_planes(3);
-    cv::split(lab_image, lab_planes);  // now we have the L image in lab_planes[0]
-    
-    // apply the CLAHE algorithm to the L channel
-    cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
-    clahe->setClipLimit(initialPreprocClahe);
-    cv::Mat dst;
-    clahe->apply(lab_planes[2], dst);
-//    cv::medianBlur(dst, dst, initialPreprocBlur);
-    
-    return dst;
-}
 int indexer;
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -87,7 +52,6 @@ void ofApp::setup(){
     
     maskShader.load( "mask.vert", "mask.frag" );
     
-    
     ofEnableAlphaBlending();
 }
 
@@ -98,10 +62,6 @@ void ofApp::update(){
         frame = toCv(cam);
         frame = initialFramePreproc(frame);
 		tracker.update(frame);
-		position = tracker.getPosition();
-		scale = tracker.getScale();
-		orientation = tracker.getOrientation();
-		rotationMatrix = tracker.getRotationMatrix();
 	}
 
     trackerSecond.update(srcTestMat);
@@ -144,7 +104,7 @@ void ofApp::draw(){
             ofPushMatrix();
             ofTranslate(ofVec2f(tracker.getPosition().x,tracker.getPosition().y));
             ofScale(trackerSecond.getScale()/tracker.getScale(),trackerSecond.getScale()/tracker.getScale());
-            applyMatrix(rotationMatrixSecond);
+            applyMatrix(trackerSecond.getRotationMatrix());
             ofxCv::drawMat(frame, -tracker.getPosition().x, -tracker.getPosition().y);
             ofPopMatrix();
             mouthFbo.end();
@@ -157,7 +117,7 @@ void ofApp::draw(){
             ofPushMatrix();
             ofTranslate(ofVec2f(tracker.getPosition().x,tracker.getPosition().y));
             ofScale(trackerSecond.getScale(),trackerSecond.getScale(),1.0);
-            applyMatrix(rotationMatrixSecond);
+            applyMatrix(trackerSecond.getRotationMatrix());
             ofPath path;
             for( int i = 0; i < tracker.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).size(); i++) {
                 if(i == 0) {
@@ -183,7 +143,7 @@ void ofApp::draw(){
             maskShader.setUniformTexture( "texture1", mouthMaskFbo.getTextureReference(), 1 );
             ofSetColor( 255, 255, 255 );
             ofTranslate(ofVec2f(tracker.getPosition().x,tracker.getPosition().y));
-            applyMatrix(rotationMatrix.getInverse());
+            applyMatrix(tracker.getRotationMatrix().getInverse());
             mouthFbo.draw( -tracker.getPosition().x, -tracker.getPosition().y );
             maskShader.end();
             ofPopMatrix();
@@ -194,7 +154,7 @@ void ofApp::draw(){
             ofPushMatrix();
             ofTranslate(ofVec2f(120,120));
             ofScale(trackerSecond.getScale(),trackerSecond.getScale());
-            applyMatrix(rotationMatrixSecond);
+            applyMatrix(trackerSecond.getRotationMatrix());
             
             // convert loaded image to OF for texture binding
             ofPixels srcTestMatPixels;
@@ -223,8 +183,8 @@ void ofApp::draw(){
             ofPushMatrix();
             ofTranslate(350, 120);
             ofScale(tracker.getScale(),tracker.getScale(),1.0);
-            applyMatrix(rotationMatrix);
-            ofDrawAxis(scale);
+            applyMatrix(tracker.getRotationMatrix());
+            ofDrawAxis(tracker.getScale());
             cam.getTextureReference().bind();
             tracker.getObjectMesh().draw();
             cam.getTextureReference().unbind();

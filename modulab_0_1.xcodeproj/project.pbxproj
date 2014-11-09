@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		D97C12FF1A0F910B00BBDA1D /* expressionSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */; };
+		D98077161A0FA8A9008CEBD7 /* helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D98077141A0FA8A9008CEBD7 /* helpers.cpp */; };
 		D9B3033319FEF1A7004F0F8D /* Expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031019FEF1A7004F0F8D /* Expression.cpp */; };
 		D9B3033419FEF1A7004F0F8D /* ExpressionClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031219FEF1A7004F0F8D /* ExpressionClassifier.cpp */; };
 		D9B3033519FEF1A7004F0F8D /* ofxFaceTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031419FEF1A7004F0F8D /* ofxFaceTracker.cpp */; };
@@ -164,6 +165,9 @@
 		D97C12FB1A0F901600BBDA1D /* todo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = todo; sourceTree = "<group>"; };
 		D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = expressionSwap.cpp; path = src/expressionSwap.cpp; sourceTree = "<group>"; };
 		D97C12FE1A0F910B00BBDA1D /* expressionSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = expressionSwap.h; path = src/expressionSwap.h; sourceTree = "<group>"; };
+		D97C13091A0FAA1000BBDA1D /* genInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = genInclude.h; sourceTree = "<group>"; };
+		D98077141A0FA8A9008CEBD7 /* helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = helpers.cpp; path = src/helpers.cpp; sourceTree = "<group>"; };
+		D98077151A0FA8A9008CEBD7 /* helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = helpers.h; path = src/helpers.h; sourceTree = "<group>"; };
 		D9B3031019FEF1A7004F0F8D /* Expression.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Expression.cpp; sourceTree = "<group>"; };
 		D9B3031119FEF1A7004F0F8D /* Expression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Expression.h; sourceTree = "<group>"; };
 		D9B3031219FEF1A7004F0F8D /* ExpressionClassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExpressionClassifier.cpp; sourceTree = "<group>"; };
@@ -491,6 +495,16 @@
 				D97C12FE1A0F910B00BBDA1D /* expressionSwap.h */,
 			);
 			name = expressionSwap;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		D98077171A0FA8AF008CEBD7 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D98077141A0FA8A9008CEBD7 /* helpers.cpp */,
+				D98077151A0FA8A9008CEBD7 /* helpers.h */,
+			);
+			name = helpers;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -1085,6 +1099,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D97C13091A0FAA1000BBDA1D /* genInclude.h */,
+				D98077171A0FA8AF008CEBD7 /* helpers */,
 				D97C12FA1A0F8FDD00BBDA1D /* expressionSwap */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
@@ -1234,6 +1250,7 @@
 				D9B3033719FEF1A7004F0F8D /* FCheck.cc in Sources */,
 				D9CE306D1A054E4700D428A8 /* ofxUISuperCanvas.cpp in Sources */,
 				D9CE30551A054E4700D428A8 /* ofxUIFPS.cpp in Sources */,
+				D98077161A0FA8A9008CEBD7 /* helpers.cpp in Sources */,
 				D9B3036619FEF1DB004F0F8D /* Calibration.cpp in Sources */,
 				D9CE30641A054E4700D428A8 /* ofxUIRadio.cpp in Sources */,
 				D9B3036519FEF1DB004F0F8D /* fdog.cpp in Sources */,

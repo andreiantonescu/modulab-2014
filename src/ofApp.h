@@ -1,13 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxCv.h"
-#include "ofxFaceTrackerThreaded.h"
-#include "ofxPS3EyeGrabber.h"
-#include "ofxUI.h"
-
-#include "constants.h"
-#include "faceTracker.h"
+#include "genInclude.h"
 
 class ofApp : public ofBaseApp{
 
@@ -25,32 +19,16 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-        cv::Mat initialFramePreproc(const cv::Mat& image);
-        cv::Mat correctGamma(const cv::Mat& img,const unsigned int& gamma );
-    
-        
 		
         ofVideoGrabber cam; //
         ofVideoGrabber camSecond; //
-        ofxFaceTrackerThreaded tracker;//
-        ofxFaceTrackerThreaded trackerSecond;//
         cv::Mat frame;//
     
-        ofVec2f position;
-        float scale;
-        ofVec3f orientation;
-        ofMatrix4x4 rotationMatrix;
-    
-        ofVec2f positionSecond;
-        float scaleSecond;
-        ofVec3f orientationSecond;
-        ofMatrix4x4 rotationMatrixSecond;
+        ofxFaceTrackerThreaded tracker;//
+        ofxFaceTrackerThreaded trackerSecond;//
     
         bool debugMode;
     
-/////////
-/////////
-        // intersection test - TO REMOVE
         ofImage srcTest;
         cv::Mat srcTestMat;
     

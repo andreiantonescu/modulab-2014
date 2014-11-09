@@ -7,3 +7,15 @@
 //
 
 #include "expressionSwap.h"
+
+void expressionSwap::setup(){
+    
+}
+
+void expressionSwap::update(){
+    
+}
+
+void expressionSwap::draw(){
+    
+}
