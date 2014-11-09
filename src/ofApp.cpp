@@ -3,16 +3,14 @@ using namespace cv;
 using namespace ofxCv;
 
 int indexer;
-//--------------------------------------------------------------
+
 void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
 	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
     
+    // camera setup -- pseye and standard webcam
     std::vector<ofVideoDevice> camDevices = cam.listDevices();
-    cout<<camDevices.size()<<endl;
-    
-    // get device list
     std::vector<ofVideoDevice> devices = PSEye.listDevices();
     
     for(std::size_t i = 0; i < devices.size(); ++i){
@@ -31,28 +29,17 @@ void ofApp::setup(){
 	PSEye.setDesiredFrameRate(120);
 	PSEye.initGrabber(camWidth, camHeight);
     PSEye.setAutogain(true);
-    
-	cam.initGrabber(camWidth, camHeight);
-    
-    tracker.setIterations(5);
-    tracker.setClamp(3.0);
-    tracker.setTolerance(.01);
-    tracker.setAttempts(1);
-	tracker.setup();
-    trackerSecond.setup();
+    cam.initGrabber(camWidth, camHeight);
 
+    // test image from drive
     srcTestMat = cv::imread("/Users/andreiantonescu/Desktop/average.jpg");
     srcTestMat = initialFramePreproc(srcTestMat);
 
     debugMode = false;
-    indexer = 0;
+    indexer = 0; // check if needed, implement GUI
     
-    mouthFbo.allocate( ofGetWidth(), ofGetHeight() );
-	mouthMaskFbo.allocate( ofGetWidth(), ofGetHeight() );
-    
-    maskShader.load( "mask.vert", "mask.frag" );
-    
-    ofEnableAlphaBlending();
+    expressionSwapper.setup();
+
 }
 
 //--------------------------------------------------------------
@@ -62,135 +49,42 @@ void ofApp::update(){
         frame = toCv(cam);
         frame = initialFramePreproc(frame);
 		tracker.update(frame);
-	}
-
-    trackerSecond.update(srcTestMat);
-    
-    PSEye.update();
-    
-	if (PSEye.isFrameNew())
-    {
-//		videoTexture.loadData(PSEye.getPixelsRef());
-//        frame = toCv(PSEye.getPixelsRef());
-//        frame = initialFramePreproc(frame);
-//        trackerSecond.update(frame);
+        
+        expressionSwapper.update(frame, srcTestMat);
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
     ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-    
     ofSetColor(255);
-    if(debugMode){
-    }
-    else
+    if(!debugMode)
         cam.draw(0, 0);
-    
     ofDrawBitmapString(ofToString(ofGetFrameRate()), ofPoint(20,20));
-    ofMesh toSet;
-    if(tracker.getFound() && trackerSecond.getFound()) {
-//        trackerSecond.draw();
-		ofSetLineWidth(1);
+    
+    // to rename this
+    ofPixels srcTestMatPixels;
+    toOf(srcTestMat, srcTestMatPixels);
+    ofImage srcTestMatOF;
+    srcTestMatOF.setFromPixels(srcTestMatPixels);
+    
+    if(expressionSwapper.trackerSource.getFound() && expressionSwapper.trackerDest.getFound()) {
         if(!debugMode){
-            tracker.draw();
+            expressionSwapper.trackerSource.draw();
         }
         if(debugMode){
+            expressionSwapper.draw(frame, srcTestMatOF);
             
-//            mouth source face drawing
-////////////            
-            mouthFbo.begin();
-            ofPushMatrix();
-            ofTranslate(ofVec2f(tracker.getPosition().x,tracker.getPosition().y));
-            ofScale(trackerSecond.getScale()/tracker.getScale(),trackerSecond.getScale()/tracker.getScale());
-            applyMatrix(trackerSecond.getRotationMatrix());
-            ofxCv::drawMat(frame, -tracker.getPosition().x, -tracker.getPosition().y);
-            ofPopMatrix();
-            mouthFbo.end();
-            
-            
-//            get source face mouth mask
-////////////
-            mouthMaskFbo.begin();
-            ofBackground( 0, 0, 0 );
-            ofPushMatrix();
-            ofTranslate(ofVec2f(tracker.getPosition().x,tracker.getPosition().y));
-            ofScale(trackerSecond.getScale(),trackerSecond.getScale(),1.0);
-            applyMatrix(trackerSecond.getRotationMatrix());
-            ofPath path;
-            for( int i = 0; i < tracker.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).size(); i++) {
-                if(i == 0) {
-                    path.newSubPath();
-                    path.moveTo(tracker.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).getVertices()[i] );
-                } else {
-                    path.lineTo( tracker.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).getVertices()[i] );
-                }
-            }
-            ofCircle(tracker.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).getCentroid2D(), 13);
-//            path.getTessellation().draw();
-            ofSetColor(255);
-            ofPopMatrix();
-            mouthMaskFbo.end();
-            
-            
-//            draw mouth using the shaders // behind destination face
-////////////
-            ofPushMatrix();
-            ofTranslate(120-tracker.getPosition().x, 120-tracker.getPosition().y);
-            maskShader.begin();
-            maskShader.setUniform1f( "time", ofGetElapsedTimef() );
-            maskShader.setUniformTexture( "texture1", mouthMaskFbo.getTextureReference(), 1 );
-            ofSetColor( 255, 255, 255 );
-            ofTranslate(ofVec2f(tracker.getPosition().x,tracker.getPosition().y));
-            applyMatrix(tracker.getRotationMatrix().getInverse());
-            mouthFbo.draw( -tracker.getPosition().x, -tracker.getPosition().y );
-            maskShader.end();
-            ofPopMatrix();
-            
-            
-//            draw second face
-////////////
-            ofPushMatrix();
-            ofTranslate(ofVec2f(120,120));
-            ofScale(trackerSecond.getScale(),trackerSecond.getScale());
-            applyMatrix(trackerSecond.getRotationMatrix());
-            
-            // convert loaded image to OF for texture binding
-            ofPixels srcTestMatPixels;
-            toOf(srcTestMat, srcTestMatPixels);
-            ofImage srcTestMatOF;
-            srcTestMatOF.setFromPixels(srcTestMatPixels);
-            srcTestMatOF.getTextureReference().bind();
-            ofMesh subMesh;
-            subMesh = trackerSecond.getObjectMesh();
-            for(int i=17; i<66; i++){ //17 / 48 /  66
-                subMesh.setVertex(i, tracker.getObjectMesh().getVertex(i));
-            }
-            subMesh.draw();
-            for(int i=17; i<66; i++){
-                ofSetColor(255,255,0);
-                ofCircle(subMesh.getVertex(i).x, subMesh.getVertex(i).y, 0.5);
-                ofSetColor(0,0,255);
-                ofSetColor(255);
-            }
-            ofSetColor(255);
-            srcTestMatOF.getTextureReference().unbind();
-            ofPopMatrix();
-         
-
 //            draw first face wireframe
             ofPushMatrix();
             ofTranslate(350, 120);
-            ofScale(tracker.getScale(),tracker.getScale(),1.0);
-            applyMatrix(tracker.getRotationMatrix());
-            ofDrawAxis(tracker.getScale());
+            ofScale(expressionSwapper.trackerSource.getScale(),expressionSwapper.trackerSource.getScale(),1.0);
+            applyMatrix(expressionSwapper.trackerSource.getRotationMatrix());
             cam.getTextureReference().bind();
-            tracker.getObjectMesh().draw();
+            expressionSwapper.trackerSource.getObjectMesh().draw();
             cam.getTextureReference().unbind();
-            tracker.getObjectMesh().drawWireframe();
+            expressionSwapper.trackerSource.getObjectMesh().drawWireframe();
             ofPopMatrix();
-            
 //            draw second face
             ofPushMatrix();
             ofTranslate(500,0);
@@ -199,9 +93,6 @@ void ofApp::draw(){
             
         }
     }
-    
-    // test ps eye
-//    videoTexture.draw(0, 0);
 }
 
 //--------------------------------------------------------------

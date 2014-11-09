@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "genInclude.h"
+#include "expressionSwap.h"
 
 class ofApp : public ofBaseApp{
 
@@ -22,7 +23,7 @@ class ofApp : public ofBaseApp{
 		
         ofVideoGrabber cam; //
         ofVideoGrabber camSecond; //
-        cv::Mat frame;//
+        cv::Mat frame; //
     
         ofxFaceTrackerThreaded tracker;//
         ofxFaceTrackerThreaded trackerSecond;//
@@ -47,4 +48,6 @@ class ofApp : public ofBaseApp{
         ofxUICanvas *gui;
         void exit();
         void guiEvent(ofxUIEventArgs &e);
+    
+        expressionSwap expressionSwapper;
 };

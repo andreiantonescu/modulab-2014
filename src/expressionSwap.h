@@ -15,14 +15,14 @@
 class expressionSwap {
 public:
     
-    ofxFaceTrackerThreaded tracker;
-    ofxFaceTrackerThreaded trackerSecond;
+    ofxFaceTrackerThreaded trackerSource;
+    ofxFaceTrackerThreaded trackerDest;
     
     ofFbo mouthFbo, mouthMaskFbo;
     ofShader maskShader;
     
     void setup();
-    void update();
-    void draw();
+    void update(cv::Mat& source, cv::Mat& dest);
+    void draw(cv::Mat& frame, ofImage& destImage);
 };
 #endif /* defined(__modulab_0_1__expressionSwap__) */
