@@ -14,5 +14,6 @@
 #define initialPreprocGamma 2
 #define camWidth 640
 #define camHeight 480
+#define mouthCircleMesh 11
 
 #endif

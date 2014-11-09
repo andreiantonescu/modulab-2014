@@ -52,7 +52,7 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
         ofTranslate(ofVec2f(trackerSource.getPosition().x,trackerSource.getPosition().y));
         ofScale(trackerDest.getScale(),trackerDest.getScale(),1.0);
         ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        ofCircle(trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).getCentroid2D(), 13);
+        ofCircle(trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).getCentroid2D(), mouthCircleMesh);
         ofSetColor(255);
         ofPopMatrix();
         mouthMaskFbo.end();
@@ -85,12 +85,6 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
             subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
         }
         subMesh.draw();
-        for(int i=17; i<66; i++){
-            ofSetColor(255,255,0);
-            ofCircle(subMesh.getVertex(i).x, subMesh.getVertex(i).y, 0.5);
-            ofSetColor(0,0,255);
-            ofSetColor(255);
-        }
         ofSetColor(255);
         destImage.getTextureReference().unbind();
         ofPopMatrix();

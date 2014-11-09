@@ -35,6 +35,14 @@ cv::Mat initialFramePreproc(const cv::Mat& image){
     cv::Mat dst;
     clahe->apply(lab_planes[2], dst);
     //    cv::medianBlur(dst, dst, initialPreprocBlur);
-    
     return dst;
+}
+
+ofImage cvToOF(const cv::Mat&cvImage){
+    ofPixels somePixels;
+    ofxCv::toOf(cvImage, somePixels);
+    ofImage image;
+    image.setFromPixels(somePixels);
+    
+    return image;
 }

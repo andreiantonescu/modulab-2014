@@ -14,5 +14,6 @@
 
 cv::Mat correctGamma(const cv::Mat& image, const unsigned int& gamma);
 cv::Mat initialFramePreproc(const cv::Mat& image);
+ofImage cvToOF(const cv::Mat&cvImage);
 
 #endif /* defined(__modulab_0_1__helpers__) */
