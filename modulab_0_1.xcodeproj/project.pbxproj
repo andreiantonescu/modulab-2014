@@ -10,7 +10,7 @@
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		D97C12FF1A0F910B00BBDA1D /* expressionSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */; };
 		D97C130D1A0FBD6100BBDA1D /* Clone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C130B1A0FBD6100BBDA1D /* Clone.cpp */; };
-		D97C13111A0FBED300BBDA1D /* faceSwapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C130F1A0FBED300BBDA1D /* faceSwapper.cpp */; };
+		D97C13161A0FC38D00BBDA1D /* faceSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C13141A0FC38D00BBDA1D /* faceSwap.cpp */; };
 		D98077161A0FA8A9008CEBD7 /* helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D98077141A0FA8A9008CEBD7 /* helpers.cpp */; };
 		D9B3033319FEF1A7004F0F8D /* Expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031019FEF1A7004F0F8D /* Expression.cpp */; };
 		D9B3033419FEF1A7004F0F8D /* ExpressionClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9B3031219FEF1A7004F0F8D /* ExpressionClassifier.cpp */; };
@@ -170,8 +170,8 @@
 		D97C13091A0FAA1000BBDA1D /* genInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = genInclude.h; sourceTree = "<group>"; };
 		D97C130B1A0FBD6100BBDA1D /* Clone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clone.cpp; path = src/Clone.cpp; sourceTree = "<group>"; };
 		D97C130C1A0FBD6100BBDA1D /* Clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Clone.h; path = src/Clone.h; sourceTree = "<group>"; };
-		D97C130F1A0FBED300BBDA1D /* faceSwapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = faceSwapper.cpp; sourceTree = "<group>"; };
-		D97C13101A0FBED300BBDA1D /* faceSwapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = faceSwapper.h; sourceTree = "<group>"; };
+		D97C13141A0FC38D00BBDA1D /* faceSwap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = faceSwap.cpp; path = src/faceSwap.cpp; sourceTree = "<group>"; };
+		D97C13151A0FC38D00BBDA1D /* faceSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = faceSwap.h; path = src/faceSwap.h; sourceTree = "<group>"; };
 		D98077141A0FA8A9008CEBD7 /* helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = helpers.cpp; path = src/helpers.cpp; sourceTree = "<group>"; };
 		D98077151A0FA8A9008CEBD7 /* helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = helpers.h; path = src/helpers.h; sourceTree = "<group>"; };
 		D9B3031019FEF1A7004F0F8D /* Expression.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Expression.cpp; sourceTree = "<group>"; };
@@ -514,13 +514,14 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		D97C13121A0FBEDA00BBDA1D /* faceSwapper */ = {
+		D97C13171A0FC39200BBDA1D /* faceSwap */ = {
 			isa = PBXGroup;
 			children = (
-				D97C130F1A0FBED300BBDA1D /* faceSwapper.cpp */,
-				D97C13101A0FBED300BBDA1D /* faceSwapper.h */,
+				D97C13141A0FC38D00BBDA1D /* faceSwap.cpp */,
+				D97C13151A0FC38D00BBDA1D /* faceSwap.h */,
 			);
-			name = faceSwapper;
+			name = faceSwap;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		D98077171A0FA8AF008CEBD7 /* helpers */ = {
@@ -1126,7 +1127,7 @@
 			children = (
 				D97C13091A0FAA1000BBDA1D /* genInclude.h */,
 				D9B3039619FEF64F004F0F8D /* constants.h */,
-				D97C13121A0FBEDA00BBDA1D /* faceSwapper */,
+				D97C13171A0FC39200BBDA1D /* faceSwap */,
 				D97C130E1A0FBD6400BBDA1D /* Clone */,
 				D98077171A0FA8AF008CEBD7 /* helpers */,
 				D97C12FA1A0F8FDD00BBDA1D /* expressionSwap */,
@@ -1275,7 +1276,7 @@
 				D9B3033519FEF1A7004F0F8D /* ofxFaceTracker.cpp in Sources */,
 				D9B3033619FEF1A7004F0F8D /* CLM.cc in Sources */,
 				D9B3036C19FEF1DB004F0F8D /* RunningBackground.cpp in Sources */,
-				D97C13111A0FBED300BBDA1D /* faceSwapper.cpp in Sources */,
+				D97C13161A0FC38D00BBDA1D /* faceSwap.cpp in Sources */,
 				D9B3033719FEF1A7004F0F8D /* FCheck.cc in Sources */,
 				D9CE306D1A054E4700D428A8 /* ofxUISuperCanvas.cpp in Sources */,
 				D9CE30551A054E4700D428A8 /* ofxUIFPS.cpp in Sources */,

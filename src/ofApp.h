@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "genInclude.h"
 #include "expressionSwap.h"
-#include "faceSwapper.h"
+#include "faceSwap.h"
 
 class ofApp : public ofBaseApp{
 
@@ -37,4 +37,5 @@ class ofApp : public ofBaseApp{
         void guiEvent(ofxUIEventArgs &e);
     
         expressionSwap expressionSwapper;
+        faceSwap faceSwapper;
 };
