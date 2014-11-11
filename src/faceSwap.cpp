@@ -8,21 +8,7 @@
 
 #include "faceSwap.h"
 
-void faceSwap::loadFace(string face){
-    src.loadImage(face);
-    if(src.getWidth() > 0) {
-        cv::Mat test;
-        test = ofxCv::toCv(src);
-        cv::medianBlur(test,test, 11);
-        srcTracker.update(test);
-        srcPoints = srcTracker.getImagePoints();
-        //        cout<<"face: "<<currentFace<<endl;
-        for(int i=0; i<srcTracker.getImagePoints().size();i++){
-            cout<<srcTracker.getImagePoints().at(i)<<endl;}
-    }
-}
-
-void faceSwap::setup(){
+void faceSwap::setup(string directory){
     
     cloneReady = false;
     clone.setup(camWidth, camHeight);
@@ -36,17 +22,38 @@ void faceSwap::setup(){
     srcTracker.setup();
     srcTracker.setIterations(25);
     srcTracker.setAttempts(4);
+}
+
+void faceSwap::update(cv::Mat& video, cv::Mat& faceSource, ofVideoGrabber& cam){
+    camTracker.update(video);
     
-    //just gifs?
-    faces.allowExt("jpg");
-    faces.allowExt("png");
-    faces.listDir("faces");
-    cout<<"Faces dir size: "<<faces.size()<<endl;
-    for(int i=0; i<faces.size(); i++)
-        cout<<faces.getPath(i)<<endl;
+    srcTracker.update(faceSource);
+    srcPoints = srcTracker.getImagePoints();
     
-    currentFace = 0;
-    if(faces.size()!=0){
-        loadFace(faces.getPath(currentFace));
+    cloneReady = camTracker.getFound();
+    
+    if(cloneReady){
+        ofMesh camMesh = camTracker.getImageMesh();
+        camMesh.clearTexCoords();
+        camMesh.addTexCoords(srcPoints);
+        
+        maskFbo.begin();
+        ofClear(0, 255);
+        camMesh.draw();
+        maskFbo.end();
+        
+        srcFbo.begin();
+        ofClear(0, 255);
+        src.bind();
+        camMesh.draw();
+        src.unbind();
+        srcFbo.end();
+        
+        clone.setStrength(16);
+        clone.update(srcFbo.getTextureReference(), cam.getTextureReference(), maskFbo.getTextureReference());
     }
+}
+
+void faceSwap::draw(){
+    
 }

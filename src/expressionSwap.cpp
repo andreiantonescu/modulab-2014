@@ -32,7 +32,14 @@ void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
 }
 
 void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
-        
+    
+        ofPushMatrix();
+        ofTranslate(-trackerDest.getPosition().x+120, -trackerDest.getPosition().y+120);
+        ofPixels somepix = destImage.getPixelsRef();
+        cv::Mat destImageCV = ofxCv::toCv(somepix);
+        ofxCv::drawMat(destImageCV, 0, 0);
+        ofPopMatrix();
+    
 //            mouth source face drawing
 ////////////
         mouthFbo.begin();
@@ -81,10 +88,14 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
         destImage.getTextureReference().bind();
         ofMesh subMesh;
         subMesh = trackerDest.getObjectMesh();
-        for(int i=17; i<66; i++){ //17 / 48 /  66
+        for(int i=17; i<36; i++){
+            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
+        }
+        for(int i=48; i<66; i++){
             subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
         }
         subMesh.draw();
+
         ofSetColor(255);
         destImage.getTextureReference().unbind();
         ofPopMatrix();

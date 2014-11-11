@@ -22,9 +22,9 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>16F4DC50FBD516D469CB3C0E1BCF8F3DAE2E5B6E</key>
-		<string>../../../../../addons/ofxIntersection</string>
+		<string>../../../addons/ofxIntersection</string>
 		<key>6116060B9B43ED41429AE056D680B0BE4D4D9659</key>
-		<string>../../../../../addons/ofxPS3EyeGrabber</string>
+		<string>../../../addons/ofxPS3EyeGrabber</string>
 		<key>F69EE4DFF6EDC22AF55014347048BEBE449EBBBA</key>
 		<string>../..</string>
 	</dict>

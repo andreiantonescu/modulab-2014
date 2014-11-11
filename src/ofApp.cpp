@@ -39,7 +39,7 @@ void ofApp::setup(){
     indexer = 0; // check if needed, implement GUI
     
     expressionSwapper.setup();
-    faceSwapper.setup();
+//    faceSwapper.setup("/Users/andreiantonescu/Desktop/");
 
 }
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		D94A93351A12D47800C77F63 /* imageSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D94A93331A12D47800C77F63 /* imageSave.cpp */; };
 		D97C12FF1A0F910B00BBDA1D /* expressionSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */; };
 		D97C130D1A0FBD6100BBDA1D /* Clone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C130B1A0FBD6100BBDA1D /* Clone.cpp */; };
 		D97C13161A0FC38D00BBDA1D /* faceSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C13141A0FC38D00BBDA1D /* faceSwap.cpp */; };
@@ -164,6 +165,8 @@
 
 /* Begin PBXFileReference section */
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
+		D94A93331A12D47800C77F63 /* imageSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imageSave.cpp; path = src/imageSave.cpp; sourceTree = "<group>"; };
+		D94A93341A12D47800C77F63 /* imageSave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imageSave.h; path = src/imageSave.h; sourceTree = "<group>"; };
 		D97C12FB1A0F901600BBDA1D /* todo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = todo; sourceTree = "<group>"; };
 		D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = expressionSwap.cpp; path = src/expressionSwap.cpp; sourceTree = "<group>"; };
 		D97C12FE1A0F910B00BBDA1D /* expressionSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = expressionSwap.h; path = src/expressionSwap.h; sourceTree = "<group>"; };
@@ -492,6 +495,16 @@
 				BBAB23BE13894E4700AA2426 /* GLUT.framework */,
 			);
 			name = "3rd party frameworks";
+			sourceTree = "<group>";
+		};
+		D94A93361A12D47B00C77F63 /* imageSave */ = {
+			isa = PBXGroup;
+			children = (
+				D94A93331A12D47800C77F63 /* imageSave.cpp */,
+				D94A93341A12D47800C77F63 /* imageSave.h */,
+			);
+			name = imageSave;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		D97C12FA1A0F8FDD00BBDA1D /* expressionSwap */ = {
@@ -1127,6 +1140,7 @@
 			children = (
 				D97C13091A0FAA1000BBDA1D /* genInclude.h */,
 				D9B3039619FEF64F004F0F8D /* constants.h */,
+				D94A93361A12D47B00C77F63 /* imageSave */,
 				D97C13171A0FC39200BBDA1D /* faceSwap */,
 				D97C130E1A0FBD6400BBDA1D /* Clone */,
 				D98077171A0FA8AF008CEBD7 /* helpers */,
@@ -1318,6 +1332,7 @@
 				D9B3036419FEF1DB004F0F8D /* ETF.cpp in Sources */,
 				D9B3033819FEF1A7004F0F8D /* FDet.cc in Sources */,
 				D9CE30561A054E4700D428A8 /* ofxUIFPSSlider.cpp in Sources */,
+				D94A93351A12D47800C77F63 /* imageSave.cpp in Sources */,
 				D9B3036D19FEF1DB004F0F8D /* Tracker.cpp in Sources */,
 				D9B3036819FEF1DB004F0F8D /* Distance.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
