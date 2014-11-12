@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "genInclude.h"
+#include "imageSave.h"
 
 class expressionSwap {
 public:
@@ -20,6 +21,8 @@ public:
     
     ofFbo mouthFbo, mouthMaskFbo;
     ofShader maskShader;
+    
+    imageSave imageSaver;
     
     void setup();
     void update(cv::Mat& source, cv::Mat& dest);

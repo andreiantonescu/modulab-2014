@@ -15,6 +15,11 @@
 class imageSave{
 public:
     
+    ExpressionClassifier classifier;
+    
+    void setup();
+    void update(ofxFaceTrackerThreaded& trackerRef);
+    
 };
 
 #endif /* defined(__modulab_0_1__imageSave__) */

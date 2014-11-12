@@ -2,8 +2,6 @@
 using namespace cv;
 using namespace ofxCv;
 
-int indexer;
-
 void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
@@ -36,7 +34,6 @@ void ofApp::setup(){
     srcTestMat = initialFramePreproc(srcTestMat);
 
     debugMode = false;
-    indexer = 0; // check if needed, implement GUI
     
     expressionSwapper.setup();
 //    faceSwapper.setup("/Users/andreiantonescu/Desktop/");

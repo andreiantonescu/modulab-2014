@@ -4,7 +4,6 @@
 #include "genInclude.h"
 #include "expressionSwap.h"
 #include "faceSwap.h"
-#include "imageSave.h"
 
 class ofApp : public ofBaseApp{
 
@@ -38,4 +37,6 @@ class ofApp : public ofBaseApp{
     
         expressionSwap expressionSwapper;
         faceSwap faceSwapper;
+    
+        bool isNewFace;
 };

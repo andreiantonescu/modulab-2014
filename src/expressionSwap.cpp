@@ -18,17 +18,18 @@ void expressionSwap::setup(){
     
     mouthFbo.allocate( ofGetWidth(), ofGetHeight() );
 	mouthMaskFbo.allocate( ofGetWidth(), ofGetHeight() );
-    
     maskShader.load( "mask.vert", "mask.frag" );
     
-    ofSetLineWidth(1);
+    imageSaver.setup();
     
+    ofSetLineWidth(1);
     ofEnableAlphaBlending();
 }
 
 void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
     trackerSource.update(source);
     trackerDest.update(dest);
+    imageSaver.update(trackerSource);
 }
 
 void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
