@@ -15,10 +15,10 @@ ofPixels matToPixels (cv::Mat& mat){
 }
 
 void expressionSwap::setup(){
-    trackerSource.setIterations(5);
-    trackerSource.setClamp(3.0);
-    trackerSource.setTolerance(.01);
-    trackerSource.setAttempts(1);
+//    trackerSource.setIterations(5);
+//    trackerSource.setClamp(3.0);
+//    trackerSource.setTolerance(.01);
+//    trackerSource.setAttempts(1);
 	trackerSource.setup();
     trackerDest.setup();
     
@@ -34,7 +34,7 @@ void expressionSwap::setup(){
 
 void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
     ofPixels pixels = matToPixels(source);
-    imageSaver.update(trackerSource, pixels);
+//    imageSaver.update(trackerSource, pixels);
     
     cv::Mat sourcePreProc = initialFramePreproc(source);
     cv::Mat destPreProc = initialFramePreproc(dest);
@@ -53,7 +53,7 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
         ofPushMatrix();
         ofTranslate(ofVec2f(trackerSource.getPosition().x,trackerSource.getPosition().y));
         ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
-        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+        ofxCv::applyMatrix(trackerSource.getRotationMatrix());
         ofxCv::drawMat(frame, -trackerSource.getPosition().x, -trackerSource.getPosition().y);
         ofPopMatrix();
         mouthFbo.end();
@@ -65,8 +65,17 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
         ofPushMatrix();
         ofTranslate(ofVec2f(trackerSource.getPosition().x,trackerSource.getPosition().y));
         ofScale(trackerDest.getScale(),trackerDest.getScale(),1.0);
-        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        ofCircle(trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).getCentroid2D(), mouthCircleMesh);
+        ofxCv::applyMatrix(trackerSource.getRotationMatrix());
+        ofPath path;
+        for( int i = 0; i < trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).size(); i++) {
+            if(i == 0) {
+                path.newSubPath();
+                path.moveTo(trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).getVertices()[i] );
+            } else {
+                path.lineTo( trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH).getVertices()[i] );
+            }
+        }
+        path.getTessellation().draw();
         ofSetColor(255);
         ofPopMatrix();
         mouthMaskFbo.end();
@@ -86,25 +95,27 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
         
 //            draw second face
 ////////////
-        ofPushMatrix();
-        ofTranslate(ofVec2f(trackerDest.getPosition()));
-        ofScale(trackerDest.getScale(),trackerDest.getScale());
-        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        
-        destImage.getTextureReference().bind();
-        ofMesh subMesh;
-        subMesh = trackerDest.getObjectMesh();
-        for(int i=27; i<36; i++){
-            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
-        }
-        for(int i=48; i<66; i++){
-            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
-        }
-        subMesh.draw();
-
-        ofSetColor(255);
-        destImage.getTextureReference().unbind();
-        ofPopMatrix();
+//        ofPushMatrix();
+//        ofTranslate(ofVec2f(trackerDest.getPosition()));
+//        ofScale(trackerDest.getScale(),trackerDest.getScale());
+//        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+//        
+//        destImage.getTextureReference().bind();
+//        ofMesh subMesh;
+//        subMesh = trackerDest.getObjectMesh();
+//        for(int i=27; i<36; i++){
+//            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
+//        }
+//        for(int i=48; i<66; i++){
+//            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
+//        }
+////        cout<<subMesh.getVertex(50).x<<" plm "<<subMesh.getVertex(10).y<<endl;
+////        ofCircle(subMesh.getVertex(50).x, subMesh.getVertex(10).y, 1);
+//        subMesh.draw();
+//
+//        ofSetColor(255);
+//        destImage.getTextureReference().unbind();
+//        ofPopMatrix();
     
 //            draw original and source
 ////////////
