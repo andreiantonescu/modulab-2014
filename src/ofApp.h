@@ -27,6 +27,7 @@ class ofApp : public ofBaseApp{
         bool debugMode;
     
         cv::Mat srcTestMat;
+        cv::Mat videoFrame;
 
         ofxPS3EyeGrabber PSEye;
         ofTexture videoTexture;
@@ -39,4 +40,7 @@ class ofApp : public ofBaseApp{
         faceSwap faceSwapper;
     
         bool isNewFace;
+    
+    // testing
+        ofVideoPlayer videoPlayer;
 };

@@ -1,4 +1,1 @@
-// pass facetracker instances to expressionSwap - source and destination - done
-// pass video to expressionSwap. video should be handled by the main app - done
-// expressionSwap should just draw at (x,y) the new face, that has the expression from the source - see where you have do draw. 
-// what do get from expressionSwap? 
+// implement quality checker for trackers.

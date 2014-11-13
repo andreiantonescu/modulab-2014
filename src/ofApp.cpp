@@ -2,6 +2,8 @@
 using namespace cv;
 using namespace ofxCv;
 
+VideoCapture capture;
+
 void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
@@ -32,43 +34,51 @@ void ofApp::setup(){
     // test image from drive
     srcTestMat = cv::imread("/Users/andreiantonescu/Desktop/average.jpg");
     srcTestMat = initialFramePreproc(srcTestMat);
+    // test with live video instead of still frame
+    videoPlayer.loadMovie("/Users/andreiantonescu/Desktop/Untitled.mov");
+    videoPlayer.play();
 
     debugMode = false;
     
     expressionSwapper.setup();
-//    faceSwapper.setup("/Users/andreiantonescu/Desktop/");
 
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     cam.update();
+    videoPlayer.update();
 	if(cam.isFrameNew()) {
         frame = toCv(cam);
-        frame = initialFramePreproc(frame);
         
-        expressionSwapper.update(frame, srcTestMat);
+        //testing live video
+        videoFrame = toCv(videoPlayer.getPixelsRef());
+        cv::resize(videoFrame, videoFrame, cv::Size(),0.75,0.75,CV_INTER_LINEAR);
+        
+        expressionSwapper.update(frame, videoFrame);
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+
     ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
     
     ofSetColor(255);
     if(!debugMode)
         cam.draw(0, 0);
-    ofDrawBitmapString(ofToString(ofGetFrameRate()), ofPoint(20,20));
     
     if(expressionSwapper.trackerSource.getFound() && expressionSwapper.trackerDest.getFound()) {
         if(!debugMode){
             expressionSwapper.trackerSource.draw();
         }
         if(debugMode){
-            ofImage toPass = cvToOF(srcTestMat);
-            expressionSwapper.draw(frame, toPass);
+            ofImage temp = cvToOF(videoFrame);
+            expressionSwapper.draw(frame, temp);
         }
     }
+    
+    ofDrawBitmapString(ofToString(ofGetFrameRate()), ofPoint(20,20));
 }
 
 //--------------------------------------------------------------

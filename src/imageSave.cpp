@@ -7,19 +7,22 @@
 //
 
 #include "imageSave.h"
+#include "threadedImageSaver.h"
 
 void imageSave::setup(){
     classifier.load("Expressions");
+    numFaces=0;
 }
 
-void imageSave::update(ofxFaceTrackerThreaded& trackerRef){
+void imageSave::update(ofxFaceTrackerThreaded& trackerRef, ofPixels& pixels){
     
     if(trackerRef.getFound()){
         classifier.classify(trackerRef);
-    }
-    for(int i = 0; i < classifier.size(); i++){
-        if(classifier.getProbability(0)<0.6 && classifier.getProbability(2)<0.2){
-            
+        if(classifier.getProbability(2)<0.4){
+//            image.setFromPixels(pixels);
+//            image.saveThreaded("savedFaces/faces" + ofToString(numFaces)+".png");
+//            cout<<"saved! "<<numFaces<<endl;
+//            numFaces++;
         }
     }
 }

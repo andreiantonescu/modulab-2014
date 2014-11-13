@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		D94A93351A12D47800C77F63 /* imageSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D94A93331A12D47800C77F63 /* imageSave.cpp */; };
+		D94A933E1A13F6E600C77F63 /* threadedImageSaver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D94A933C1A13F6E600C77F63 /* threadedImageSaver.cpp */; };
 		D97C12FF1A0F910B00BBDA1D /* expressionSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */; };
 		D97C130D1A0FBD6100BBDA1D /* Clone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C130B1A0FBD6100BBDA1D /* Clone.cpp */; };
 		D97C13161A0FC38D00BBDA1D /* faceSwap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97C13141A0FC38D00BBDA1D /* faceSwap.cpp */; };
@@ -167,6 +168,8 @@
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		D94A93331A12D47800C77F63 /* imageSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imageSave.cpp; path = src/imageSave.cpp; sourceTree = "<group>"; };
 		D94A93341A12D47800C77F63 /* imageSave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imageSave.h; path = src/imageSave.h; sourceTree = "<group>"; };
+		D94A933C1A13F6E600C77F63 /* threadedImageSaver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = threadedImageSaver.cpp; path = src/threadedImageSaver.cpp; sourceTree = "<group>"; };
+		D94A933D1A13F6E600C77F63 /* threadedImageSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = threadedImageSaver.h; path = src/threadedImageSaver.h; sourceTree = "<group>"; };
 		D97C12FB1A0F901600BBDA1D /* todo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = todo; sourceTree = "<group>"; };
 		D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = expressionSwap.cpp; path = src/expressionSwap.cpp; sourceTree = "<group>"; };
 		D97C12FE1A0F910B00BBDA1D /* expressionSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = expressionSwap.h; path = src/expressionSwap.h; sourceTree = "<group>"; };
@@ -507,6 +510,19 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		D94A933F1A13F6EC00C77F63 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				D97C130E1A0FBD6400BBDA1D /* Clone */,
+				D9CE2DEC1A02F55E00D428A8 /* maskShader */,
+				D98077171A0FA8AF008CEBD7 /* helpers */,
+				D94A933C1A13F6E600C77F63 /* threadedImageSaver.cpp */,
+				D94A933D1A13F6E600C77F63 /* threadedImageSaver.h */,
+			);
+			name = utils;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		D97C12FA1A0F8FDD00BBDA1D /* expressionSwap */ = {
 			isa = PBXGroup;
 			children = (
@@ -524,7 +540,6 @@
 				D97C130C1A0FBD6100BBDA1D /* Clone.h */,
 			);
 			name = Clone;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		D97C13171A0FC39200BBDA1D /* faceSwap */ = {
@@ -544,7 +559,6 @@
 				D98077151A0FA8A9008CEBD7 /* helpers.h */,
 			);
 			name = helpers;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		D9B3030E19FEF1A7004F0F8D /* ofxFaceTracker */ = {
@@ -807,6 +821,7 @@
 				D9CE2DEA1A02F50B00D428A8 /* mask.frag */,
 			);
 			name = maskShader;
+			path = src;
 			sourceTree = "<group>";
 		};
 		D9CE2F6A1A054BE800D428A8 /* ofxPS3EyeGrabber */ = {
@@ -1140,15 +1155,13 @@
 			children = (
 				D97C13091A0FAA1000BBDA1D /* genInclude.h */,
 				D9B3039619FEF64F004F0F8D /* constants.h */,
+				D94A933F1A13F6EC00C77F63 /* utils */,
 				D94A93361A12D47B00C77F63 /* imageSave */,
 				D97C13171A0FC39200BBDA1D /* faceSwap */,
-				D97C130E1A0FBD6400BBDA1D /* Clone */,
-				D98077171A0FA8AF008CEBD7 /* helpers */,
 				D97C12FA1A0F8FDD00BBDA1D /* expressionSwap */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
-				D9CE2DEC1A02F55E00D428A8 /* maskShader */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1269,6 +1282,7 @@
 				D9CE30671A054E4700D428A8 /* ofxUIRotarySlider.cpp in Sources */,
 				D9CE305F1A054E4700D428A8 /* ofxUIMinimalSlider.cpp in Sources */,
 				D9CE304C1A054E4600D428A8 /* ofxUI2DPad.cpp in Sources */,
+				D94A933E1A13F6E600C77F63 /* threadedImageSaver.cpp in Sources */,
 				D9CE306F1A054E4700D428A8 /* ofxUITextArea.cpp in Sources */,
 				D9CE30651A054E4700D428A8 /* ofxUIRangeSlider.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,

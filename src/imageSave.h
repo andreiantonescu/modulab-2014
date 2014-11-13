@@ -11,14 +11,19 @@
 
 #include <iostream>
 #include "genInclude.h"
+#include "threadedImageSaver.h"
 
 class imageSave{
 public:
     
     ExpressionClassifier classifier;
+    threadedImageSaver image;
+    ofFbo fbo;
+    
+    int numFaces;
     
     void setup();
-    void update(ofxFaceTrackerThreaded& trackerRef);
+    void update(ofxFaceTrackerThreaded& trackerRef, ofPixels& pixels);
     
 };
 
