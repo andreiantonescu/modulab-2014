@@ -32,8 +32,8 @@ void ofApp::setup(){
     cam.initGrabber(camWidth, camHeight);
 
     // test image from drive
-    srcTestMat = cv::imread("/Users/andreiantonescu/Desktop/average.jpg");
-    srcTestMat = initialFramePreproc(srcTestMat);
+    srcTestMat = cv::imread("/Users/andreiantonescu/Desktop/average2.jpg");
+    cv::cvtColor(srcTestMat, srcTestMat, CV_BGR2RGB);
     // test with live video instead of still frame
     videoPlayer.loadMovie("/Users/andreiantonescu/Desktop/Untitled.mov");
     videoPlayer.play();
@@ -55,7 +55,7 @@ void ofApp::update(){
         videoFrame = toCv(videoPlayer.getPixelsRef());
         cv::resize(videoFrame, videoFrame, cv::Size(),0.75,0.75,CV_INTER_LINEAR);
         
-        expressionSwapper.update(frame, videoFrame);
+        expressionSwapper.update(frame, srcTestMat);
 	}
 }
 
@@ -73,8 +73,8 @@ void ofApp::draw(){
             expressionSwapper.trackerSource.draw();
         }
         if(debugMode){
-            ofImage temp = cvToOF(videoFrame);
-            expressionSwapper.draw(frame, temp);
+            ofImage temp = cvToOF(srcTestMat);
+            expressionSwapper.draw(frame, temp, cam);
         }
     }
     

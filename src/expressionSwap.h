@@ -21,12 +21,15 @@ public:
     
     ofFbo mouthFbo, mouthMaskFbo;
     ofShader maskShader;
+    ofTessellator tess;
     
     imageSave imageSaver;
     
+    int x,y;
+    
     void setup();
     void update(cv::Mat& source, cv::Mat& dest);
-    void draw(cv::Mat& frame, ofImage& destImage);
+    void draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& cam);
     
     void keyPressed(int key);
 };

@@ -26,6 +26,8 @@ void expressionSwap::setup(){
     
     ofSetLineWidth(1);
     ofEnableAlphaBlending();
+    
+    x = 0; y=0;
 }
 
 void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
@@ -39,85 +41,94 @@ void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
     trackerDest.update(destPreProc);
 }
 
-void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
+void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& cam){
     
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
         destImage.draw(0, 0);
     
-        //            mouth source face drawing
-        ////////////
+//    get inner and outer mouth meshes
+        ofPolyline innerMouth = trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH);
+        ofMesh innerMouthMesh;
+        ofPolyline outerMouth = trackerSource.getObjectFeature(ofxFaceTrackerThreaded::OUTER_MOUTH);
+        ofMesh outerMouthMesh;
+        tess.tessellateToMesh(innerMouth,OF_POLY_WINDING_POSITIVE, innerMouthMesh);
+        tess.tessellateToMesh(outerMouth,OF_POLY_WINDING_POSITIVE, outerMouthMesh);
+//    fill inner mouth
+        ofMesh face = trackerSource.getObjectMesh();
+        int vertices[8]={48,60,61,62,54,63,64,65}; // inner mouth vertices
+        for(int i=0; i<8; i++)
+            for(int j=0; j<8; j++)
+                for(int z=0; z<8; z++)
+                    face.addTriangle(vertices[i], vertices[j], vertices[z]);
+    
+        ofVec2f toDraw = trackerDest.getPosition(); // final place to put the new mouth
+    
+//    mouth fbo
         mouthFbo.begin();
-        ofBackground( 0, 0, 0 );
-        ofxCv::drawMat(frame,0,0);
-        mouthFbo.end();
-        
-        //            get source face mouth mask
-        ////////////
-        mouthMaskFbo.begin();
-        ofBackground( 0, 0, 0 );
         ofPushMatrix();
-        
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-        ofTranslate(trackerSource.getPosition());
-        ofxCv::applyMatrix(trackerSource.getRotationMatrix());
-        ofScale(trackerSource.getScale(),trackerSource.getScale(),trackerSource.getScale());
-        ofPath path;
-        for( int i = 0; i < trackerSource.getObjectFeature(ofxFaceTracker::INNER_MOUTH).size(); i++) {
-            if(i == 0) {
-                path.newSubPath();
-                path.moveTo(trackerSource.getObjectFeature(ofxFaceTracker::INNER_MOUTH).getVertices()[i] );
-            } else {
-                path.lineTo(trackerSource.getObjectFeature(ofxFaceTracker::INNER_MOUTH).getVertices()[i] );
-            }
+        ofClear(0, 0, 0);
+        ofTranslate(toDraw);
+        ofScale(trackerSource.getScale(), trackerSource.getScale(),trackerSource.getScale());
+        ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
+        cam.getTextureReference().bind();
+        face.draw();
+        cam.getTextureReference().unbind();
+        ofPopMatrix();
+        mouthFbo.end();
+    
+        //            draw second face
+        ////////////
+        ofPushMatrix();
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+        ofTranslate(ofVec2f(trackerDest.getPosition()));
+        ofScale(trackerDest.getScale(),trackerDest.getScale());
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+        
+        destImage.getTextureReference().bind();
+        ofMesh subMesh;
+        subMesh = trackerDest.getObjectMesh();
+        for(int i=27; i<36; i++){
+            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
         }
-        path.getTessellation().draw();
+        for(int i=48; i<66; i++){
+            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
+        }
+        subMesh.draw();
+        
         ofSetColor(255);
+        destImage.getTextureReference().unbind();
+        ofPopMatrix();
+    
+//    mask fbo
+        mouthMaskFbo.begin();
+        ofPushMatrix();
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+        ofClear(0, 0, 0);
+        ofTranslate(toDraw);
+        ofScale(trackerSource.getScale(), trackerSource.getScale(),trackerSource.getScale());
+        ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
+        innerMouthMesh.draw();
+        outerMouthMesh.draw();
         ofPopMatrix();
         mouthMaskFbo.end();
     
-    
-        //            draw mouth using the shaders // behind destination face
-        ////////////
+//    draw shader
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+        ofTranslate(x,y);
         maskShader.begin();
         maskShader.setUniform1f( "time", ofGetElapsedTimef() );
         maskShader.setUniformTexture( "texture1", mouthMaskFbo.getTextureReference(), 1);
         ofSetColor( 255, 255, 255 );
-    
-        ofTranslate(300,300);
-        ofxCv::applyMatrix(trackerSource.getRotationMatrix().getInverse());
-        ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
-        mouthFbo.draw(-trackerSource.getPosition().x, -trackerSource.getPosition().y);
-    
+        ofPushMatrix();
+        ofTranslate(toDraw);
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+        mouthFbo.draw(-toDraw);
+        ofPopMatrix();
         maskShader.end();
         ofPopMatrix();
 
-    
-////            draw second face
-//////////////
-//        ofPushMatrix();
-//        ofTranslate(ofVec2f(trackerDest.getPosition()));
-//        ofScale(trackerDest.getScale(),trackerDest.getScale());
-//        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-//        
-//        destImage.getTextureReference().bind();
-//        ofMesh subMesh;
-//        subMesh = trackerDest.getObjectMesh();
-//        for(int i=27; i<36; i++){
-//            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
-//        }
-//        for(int i=48; i<66; i++){
-//            subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
-//        }
-//        subMesh.draw();
-////        cout<<subMesh.getVertex(50).x<<" plm "<<subMesh.getVertex(10).y<<endl;
-//        ofCircle(subMesh.getVertex(50).x, subMesh.getVertex(10).y, 1);
-//    
-//        ofSetColor(255);
-//        destImage.getTextureReference().unbind();
-//        ofPopMatrix();
-    
-    
 //            draw original and source
 ////////////
         cv::Mat frameResized;
@@ -126,10 +137,20 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage){
         ofImage destResized;
         destImage.resize(destImage.width/4, destImage.height/4);
         destImage.draw(0, frameResized.rows);
+    
+    
 }
 
 void expressionSwap::keyPressed(int key){
     if(key == 'r'){
         trackerSource.reset();
     }
+    if(key == 'q')
+        x++;
+    if(key == 'w')
+        x--;
+    if(key == 'a')
+        y++;
+    if(key == 's')
+        y--;
 }
