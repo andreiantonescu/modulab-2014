@@ -32,7 +32,7 @@ void ofApp::setup(){
     cam.initGrabber(camWidth, camHeight);
 
     // test image from drive
-    srcTestMat = cv::imread("/Users/andreiantonescu/Desktop/average2.jpg");
+    srcTestMat = cv::imread("/Users/andreiantonescu/Desktop/average.jpg");
     cv::cvtColor(srcTestMat, srcTestMat, CV_BGR2RGB);
     // test with live video instead of still frame
     videoPlayer.loadMovie("/Users/andreiantonescu/Desktop/Untitled.mov");
@@ -78,7 +78,9 @@ void ofApp::draw(){
         }
     }
     
+    ofSetColor(0, 0, 255);
     ofDrawBitmapString(ofToString(ofGetFrameRate()), ofPoint(20,20));
+    ofSetColor(255, 255, 255);
 }
 
 //--------------------------------------------------------------

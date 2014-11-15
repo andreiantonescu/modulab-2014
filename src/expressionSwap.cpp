@@ -6,7 +6,69 @@
 //
 //
 
+
+///
+
 #include "expressionSwap.h"
+using namespace cv;
+using namespace ofxCv;
+
+cv::Mat colorConvert(cv::Mat& source_img, cv::Mat& target_img){
+    Mat source_img_cie,
+    target_img_cie;
+    
+    cvtColor(source_img, source_img_cie, CV_BGR2Lab );
+    cvtColor(target_img, target_img_cie, CV_BGR2Lab );
+    
+    
+    /* Split into individual l a b channels */
+    vector<Mat> source_channels,
+    target_channels;
+    
+    split( source_img_cie, source_channels );
+    split( target_img_cie, target_channels );
+    
+    /* For each of the l, a, b, channel ... */
+    for( int i = 0; i < 3; i++ ) {
+        /* ... find the mean and standard deviations */
+        /* ... for source image ... */
+        Mat temp_mean, temp_stddev;
+        meanStdDev(source_channels[i], temp_mean, temp_stddev);
+        double source_mean     = temp_mean.at<double>(0);
+        double source_stddev   = temp_stddev.at<double>(0);
+        
+        /* ... and for target image */
+        meanStdDev(target_channels[i], temp_mean, temp_stddev);
+        double target_mean     = temp_mean.at<double>(0);
+        double target_stddev   = temp_stddev.at<double>(0);
+        
+        /* Fit the color distribution from target LAB to our source LAB */
+        target_channels[i].convertTo( target_channels[i], CV_64FC1 );
+        target_channels[i] -= target_mean;
+        target_channels[i] *= (target_stddev / source_stddev);
+        target_channels[i] += source_mean;
+        target_channels[i].convertTo( target_channels[i], CV_8UC1 );
+    }
+    
+    
+    /* Merge the lab channels back into a single BGR image */
+    Mat output_img;
+    merge(target_channels, output_img);
+    cvtColor(output_img, output_img, CV_Lab2BGR );
+    
+    
+    /* Append all the images together so that it looks like a triptych */
+    int max_rows = MAX(source_img.rows, target_img.rows);
+    Mat append( max_rows, source_img.cols + target_img.cols + output_img.cols, CV_8UC3, Scalar(0, 0, 0) );
+    source_img.copyTo( Mat(append, cv::Rect( Point2i(0, 0),                                 source_img.size() )) );
+    target_img.copyTo( Mat(append, cv::Rect( Point2i(source_img.cols, 0),                   target_img.size() )) );
+    output_img.copyTo( Mat(append, cv::Rect( Point2i(source_img.cols + target_img.cols, 0), output_img.size() )) );
+    
+    return append;
+}
+
+
+
 
 ofPixels matToPixels (cv::Mat& mat){
     ofPixels pixels;
@@ -112,6 +174,15 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
         outerMouthMesh.draw();
         ofPopMatrix();
         mouthMaskFbo.end();
+
+        ofPixels inter;
+        mouthMaskFbo.readToPixels(inter);
+        cv::Mat test,test2;
+        test = toCv(inter);
+        test2 = imread("/Users/andreiantonescu/Desktop/average.jpg");
+
+        imshow("aasd",test);
+//        imshow("asdasd", colorConvert(test,test2));
     
 //    draw shader
         ofPushMatrix();
@@ -133,22 +204,16 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
 ////////////
         cv::Mat frameResized;
         cv::resize(frame,frameResized,cv::Size(),0.25,0.25,CV_INTER_LINEAR);
-        ofxCv::drawMat(frameResized, 0, 0);
+        ofxCv::drawMat(frameResized, 350, 0);
         ofImage destResized;
         destImage.resize(destImage.width/4, destImage.height/4);
-        destImage.draw(0, frameResized.rows);
-    
-    
+        destImage.draw(350, frameResized.rows);
 }
 
 void expressionSwap::keyPressed(int key){
     if(key == 'r'){
         trackerSource.reset();
     }
-    if(key == 'q')
-        x++;
-    if(key == 'w')
-        x--;
     if(key == 'a')
         y++;
     if(key == 's')
