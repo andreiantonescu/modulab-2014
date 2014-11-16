@@ -174,15 +174,13 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
         outerMouthMesh.draw();
         ofPopMatrix();
         mouthMaskFbo.end();
-
-        ofPixels inter;
-        mouthMaskFbo.readToPixels(inter);
-        cv::Mat test,test2;
-        test = toCv(inter);
-        test2 = imread("/Users/andreiantonescu/Desktop/average.jpg");
-
-        imshow("aasd",test);
-//        imshow("asdasd", colorConvert(test,test2));
+    
+//        ofPixels inter;
+//        mouthFbo.readToPixels(inter);
+//        cv::Mat test,test2;
+//        test2 = imread("/Users/andreiantonescu/Desktop/average.jpg");
+//        cv::cvtColor(frame,test,CV_BGR2RGB);
+//        imshow("asdasd", colorConvert(test2,test));
     
 //    draw shader
         ofPushMatrix();
