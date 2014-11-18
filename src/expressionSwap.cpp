@@ -141,7 +141,7 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
         cloneMask.begin();
         ofClear(255);
         cloneMask.end();
-        clone.setStrength(24);
+        clone.setStrength(cloneStrength);
         clone.update(sourceFaceFbo.getTextureReference(), destinationFaceFbo.getTextureReference(), cloneMask.getTextureReference());
     
 //        draw shader
