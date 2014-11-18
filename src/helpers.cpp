@@ -8,7 +8,18 @@
 
 #include "helpers.h"
 
-cv::Mat correctGamma(const cv::Mat& image, const unsigned int& gamma ){
+double calcualteMeanIntesity(const cv::Mat& image){
+    cv::Mat inter;
+    double intensity = 0.0;
+    cv::cvtColor(image, inter, CV_RGB2GRAY);
+    for (int i=0; i<inter.rows; i++) {
+        for(int j=0; j<inter.cols; j++)
+            intensity+=(double)inter.at<uchar>(i,j);
+    }
+    return intensity/(inter.rows * inter.cols);
+}
+
+cv::Mat correctGamma(const cv::Mat& image, const double& gamma ){
     double inverse_gamma = 1.0 / gamma;
     cv::Mat lut_matrix(1, 256, CV_8UC1 );
     uchar * ptr = lut_matrix.ptr();

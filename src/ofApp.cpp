@@ -50,8 +50,8 @@ void ofApp::update(){
     videoPlayer.update();
 	if(cam.isFrameNew()) {
         frame = toCv(cam);
+//        cv::cvtColor(frame,frame,CV_BGR2RGB);
         
-        //testing live video
         videoFrame = toCv(videoPlayer.getPixelsRef());
         cv::resize(videoFrame, videoFrame, cv::Size(),0.75,0.75,CV_INTER_LINEAR);
         

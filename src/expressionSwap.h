@@ -19,9 +19,11 @@ public:
     ofxFaceTrackerThreaded trackerSource;
     ofxFaceTrackerThreaded trackerDest;
     
-    ofFbo mouthFbo, mouthMaskFbo;
+    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask;//, finalSourceMouth;
     ofShader maskShader;
     ofTessellator tess;
+    
+    Clone clone;
     
     imageSave imageSaver;
     

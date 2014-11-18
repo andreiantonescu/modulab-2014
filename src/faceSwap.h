@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include "genInclude.h"
-#include "Clone.h"
 
 class faceSwap{
 public:

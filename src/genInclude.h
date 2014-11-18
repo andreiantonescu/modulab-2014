@@ -15,5 +15,6 @@
 #include "ofxUI.h"
 #include "helpers.h"
 #include "constants.h"
+#include "Clone.h"
 
 #endif

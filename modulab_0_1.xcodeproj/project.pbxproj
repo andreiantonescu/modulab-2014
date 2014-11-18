@@ -173,7 +173,7 @@
 		D97C12FB1A0F901600BBDA1D /* todo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = todo; sourceTree = "<group>"; };
 		D97C12FD1A0F910B00BBDA1D /* expressionSwap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = expressionSwap.cpp; path = src/expressionSwap.cpp; sourceTree = "<group>"; };
 		D97C12FE1A0F910B00BBDA1D /* expressionSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = expressionSwap.h; path = src/expressionSwap.h; sourceTree = "<group>"; };
-		D97C13091A0FAA1000BBDA1D /* genInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = genInclude.h; sourceTree = "<group>"; };
+		D97C13091A0FAA1000BBDA1D /* genInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = genInclude.h; path = src/genInclude.h; sourceTree = "<group>"; };
 		D97C130B1A0FBD6100BBDA1D /* Clone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clone.cpp; path = src/Clone.cpp; sourceTree = "<group>"; };
 		D97C130C1A0FBD6100BBDA1D /* Clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Clone.h; path = src/Clone.h; sourceTree = "<group>"; };
 		D97C13141A0FC38D00BBDA1D /* faceSwap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = faceSwap.cpp; path = src/faceSwap.cpp; sourceTree = "<group>"; };
@@ -254,7 +254,7 @@
 		D9B3038019FEF29E004F0F8D /* libopencv_imgproc.2.4.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.2.4.7.dylib; path = /usr/local/lib/libopencv_imgproc.2.4.7.dylib; sourceTree = "<absolute>"; };
 		D9B3038119FEF29E004F0F8D /* libopencv_ml.2.4.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_ml.2.4.7.dylib; path = /usr/local/lib/libopencv_ml.2.4.7.dylib; sourceTree = "<absolute>"; };
 		D9B3038219FEF29E004F0F8D /* libopencv_video.2.4.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.2.4.7.dylib; path = /usr/local/lib/libopencv_video.2.4.7.dylib; sourceTree = "<absolute>"; };
-		D9B3039619FEF64F004F0F8D /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		D9B3039619FEF64F004F0F8D /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = constants.h; path = src/constants.h; sourceTree = "<group>"; };
 		D9CE2DE61A01716E00D428A8 /* ofxIntersection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxIntersection.cpp; sourceTree = "<group>"; };
 		D9CE2DE71A01716E00D428A8 /* ofxIntersection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxIntersection.h; sourceTree = "<group>"; };
 		D9CE2DEA1A02F50B00D428A8 /* mask.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = mask.frag; path = bin/data/mask.frag; sourceTree = SOURCE_ROOT; };
@@ -513,11 +513,12 @@
 		D94A933F1A13F6EC00C77F63 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				D97C13091A0FAA1000BBDA1D /* genInclude.h */,
+				D9B3039619FEF64F004F0F8D /* constants.h */,
 				D97C130E1A0FBD6400BBDA1D /* Clone */,
 				D9CE2DEC1A02F55E00D428A8 /* maskShader */,
 				D98077171A0FA8AF008CEBD7 /* helpers */,
-				D94A933C1A13F6E600C77F63 /* threadedImageSaver.cpp */,
-				D94A933D1A13F6E600C77F63 /* threadedImageSaver.h */,
+				D9BD8F3E1A1BF4A0009C8F9C /* threadedImageSaver */,
 			);
 			name = utils;
 			path = ..;
@@ -802,6 +803,15 @@
 				D9B3038219FEF29E004F0F8D /* libopencv_video.2.4.7.dylib */,
 			);
 			name = opencv;
+			sourceTree = "<group>";
+		};
+		D9BD8F3E1A1BF4A0009C8F9C /* threadedImageSaver */ = {
+			isa = PBXGroup;
+			children = (
+				D94A933C1A13F6E600C77F63 /* threadedImageSaver.cpp */,
+				D94A933D1A13F6E600C77F63 /* threadedImageSaver.h */,
+			);
+			name = threadedImageSaver;
 			sourceTree = "<group>";
 		};
 		D9CE2DE51A01716E00D428A8 /* ofxIntersection */ = {
@@ -1153,8 +1163,6 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D97C13091A0FAA1000BBDA1D /* genInclude.h */,
-				D9B3039619FEF64F004F0F8D /* constants.h */,
 				D94A933F1A13F6EC00C77F63 /* utils */,
 				D94A93361A12D47B00C77F63 /* imageSave */,
 				D97C13171A0FC39200BBDA1D /* faceSwap */,

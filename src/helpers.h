@@ -12,8 +12,9 @@
 #include <stdio.h>
 #include "genInclude.h"
 
-cv::Mat correctGamma(const cv::Mat& image, const unsigned int& gamma);
+cv::Mat correctGamma(const cv::Mat& image, const double& gamma);
 cv::Mat initialFramePreproc(const cv::Mat& image);
 ofImage cvToOF(const cv::Mat&cvImage);
+double calcualteMeanIntesity(const cv::Mat& image);
 
 #endif /* defined(__modulab_0_1__helpers__) */

@@ -1,2 +1,3 @@
 // implement quality checker for trackers.
 // color transfer for / face - to do in the face fbo before applying the mouth mask.
+// blur outer lips mask?
