@@ -73,7 +73,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
     
         ofVec2f toDraw = trackerDest.getPosition(); // final place to put the new mouth
     
-//      get source face fbo - contains mouth
+//      get destination face fbo
         sourceFaceFbo.begin();
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
@@ -87,7 +87,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         ofPopMatrix();
         sourceFaceFbo.end();
     
-//      draw destination face
+//      draw source face - put the saved face from pics here
 ////////////
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
@@ -110,7 +110,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         source.unbind();
         ofPopMatrix();
     
-//      get destination face fbo
+//      get source face fbo
 ////////////
         destinationFaceFbo.begin();
         ofPushMatrix();
@@ -125,7 +125,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         ofPopMatrix();
         destinationFaceFbo.end();
     
-//    get mouth mask fbo for source face
+//    get mouth mask fbo for destination face
         mouthMaskFbo.begin();
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
