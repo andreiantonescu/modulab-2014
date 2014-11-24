@@ -20,10 +20,8 @@ public:
     threadedImageSaver image;
     ofFbo fbo;
     
-    int numFaces;
-    
     void setup();
-    void update(ofxFaceTrackerThreaded& trackerRef, ofPixels& pixels);
+    bool update(ofxFaceTrackerThreaded& trackerRef, ofPixels& pixels, int tracker);
     
 };
 

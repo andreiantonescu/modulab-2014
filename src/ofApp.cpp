@@ -42,7 +42,6 @@ void ofApp::setup(){
     debugMode = false;
     
     expressionSwapper.setup();
-
 }
 
 //--------------------------------------------------------------
@@ -58,7 +57,6 @@ void ofApp::update(){
         
 //        expressionSwapper.update(frame, srcTestMat);
         expressionSwapper.update(srcTestMat, frame);
-        
 	}
 }
 

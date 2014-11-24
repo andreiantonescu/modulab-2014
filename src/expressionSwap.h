@@ -26,6 +26,7 @@ public:
     Clone clone;
     
     imageSave imageSaver;
+    int saverTracker; bool lastFound; bool savedForTracker;
     
     int x,y;
     

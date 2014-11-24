@@ -37,12 +37,28 @@ void expressionSwap::setup(){
     ofSetLineWidth(1);
     ofEnableAlphaBlending();
     
-    x = 0; y = 4;
+    x = 0; y = 4; // to correct
+    
+    saverTracker = 0;
+    lastFound = false;
+    savedForTracker = false;
 }
 
 void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
-    ofPixels pixels = matToPixels(source);
-//    imageSaver.update(trackerSource, pixels);
+    
+    // image saving for destination tracker workflow
+    if(!trackerDest.getFound() && lastFound == true){
+        saverTracker++;
+        lastFound = false;
+        savedForTracker = false;
+    }
+    if(trackerDest.getFound() && savedForTracker == false){
+        lastFound = true;
+        ofPixels pixels = matToPixels(dest);
+        if(imageSaver.update(trackerDest, pixels, saverTracker)){
+            savedForTracker = true;
+        }
+    }
     
     cv::Mat sourcePreProc = initialFramePreproc(source);
     cv::Mat destPreProc = initialFramePreproc(dest);

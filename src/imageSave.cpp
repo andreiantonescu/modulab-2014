@@ -11,18 +11,18 @@
 
 void imageSave::setup(){
     classifier.load("Expressions");
-    numFaces=0;
 }
 
-void imageSave::update(ofxFaceTrackerThreaded& trackerRef, ofPixels& pixels){
+bool imageSave::update(ofxFaceTrackerThreaded& trackerRef, ofPixels& pixels, int tracker){
     
     if(trackerRef.getFound()){
         classifier.classify(trackerRef);
         if(classifier.getProbability(2)<0.4){
-//            image.setFromPixels(pixels);
-//            image.saveThreaded("savedFaces/faces" + ofToString(numFaces)+".png");
-//            cout<<"saved! "<<numFaces<<endl;
-//            numFaces++;
+            image.setFromPixels(pixels);
+            image.saveThreaded("savedFaces/tracker" + ofToString(tracker) + ".png");
+            cout<<"saved for "<<tracker<<endl;
+            return true;
         }
     }
+    return false;
 }
