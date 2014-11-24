@@ -31,7 +31,7 @@ public:
     
     void setup();
     void update(cv::Mat& source, cv::Mat& dest);
-    void draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& cam);
+    void draw(ofTexture& source, ofTexture& destination);
     
     void keyPressed(int key);
 };

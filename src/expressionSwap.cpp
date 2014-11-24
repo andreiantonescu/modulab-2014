@@ -37,7 +37,7 @@ void expressionSwap::setup(){
     ofSetLineWidth(1);
     ofEnableAlphaBlending();
     
-    x = 0; y = 0;
+    x = 0; y = 4;
 }
 
 void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
@@ -51,10 +51,10 @@ void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
     trackerDest.update(destPreProc);
 }
 
-void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& cam){
+void expressionSwap::draw(ofTexture& source, ofTexture& destination){
     
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-        destImage.draw(0, 0); // draw destination
+        source.draw(0, 0); // draw destination
     
 //    get inner and outer mouth meshes
         ofPolyline innerMouth = trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH);
@@ -81,9 +81,9 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
         ofTranslate(toDraw);
         ofScale(trackerSource.getScale(), trackerSource.getScale(),trackerSource.getScale());
         ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
-        cam.getTextureReference().bind();
+        destination.bind();
         face.draw();
-        cam.getTextureReference().unbind();
+        destination.unbind();
         ofPopMatrix();
         sourceFaceFbo.end();
     
@@ -95,7 +95,7 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
         ofScale(trackerDest.getScale(),trackerDest.getScale());
         ofxCv::applyMatrix(trackerDest.getRotationMatrix());
         
-        destImage.getTextureReference().bind();
+        source.bind();
         ofMesh subMesh;
         subMesh = trackerDest.getObjectMesh();
         for(int i=27; i<36; i++){
@@ -107,7 +107,7 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
         subMesh.draw();
         
         ofSetColor(255);
-        destImage.getTextureReference().unbind();
+        source.unbind();
         ofPopMatrix();
     
 //      get destination face fbo
@@ -118,10 +118,10 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
         ofTranslate(ofVec2f(trackerDest.getPosition()));
         ofScale(trackerDest.getScale(),trackerDest.getScale());
         ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        destImage.getTextureReference().bind();
+        source.bind();
         subMesh.draw();
         ofSetColor(255);
-        destImage.getTextureReference().unbind();
+        source.unbind();
         ofPopMatrix();
         destinationFaceFbo.end();
     
@@ -160,15 +160,6 @@ void expressionSwap::draw(cv::Mat& frame, ofImage& destImage, ofVideoGrabber& ca
         ofPopMatrix();
         maskShader.end();
         ofPopMatrix();
-
-//        draw original and source
-////////////
-        cv::Mat frameResized;
-        cv::resize(frame,frameResized,cv::Size(),0.25,0.25,CV_INTER_LINEAR);
-        ofxCv::drawMat(frameResized, 350, 0);
-        ofImage destResized;
-        destImage.resize(destImage.width/4, destImage.height/4);
-        destImage.draw(350, frameResized.rows);
 }
 
 void expressionSwap::keyPressed(int key){
