@@ -17,15 +17,15 @@ public:
     ofxFaceTrackerThreaded camTracker;
     ofxFaceTrackerThreaded srcTracker;
     
-    ofImage src;
+    cv::Mat src;
     std::vector<ofVec2f> srcPoints;
     
     bool cloneReady;
     Clone clone;
     ofFbo srcFbo, maskFbo;
     
-    void setup(string directory);
-    void update(cv::Mat& video, cv::Mat& faceSource,ofVideoGrabber &cam);
+    void setup(); // to change, should not receive face path - just for testing
+    void updateWithMesh(cv::Mat& destFace, string face, ofxFaceTrackerThreaded& destTracker);
     void draw();
 };
 

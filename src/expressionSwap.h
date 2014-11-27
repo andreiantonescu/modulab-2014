@@ -12,27 +12,35 @@
 #include <iostream>
 #include "genInclude.h"
 #include "imageSave.h"
+#include "faceSwap.h"
 
 class expressionSwap {
 public:
     
     ofxFaceTrackerThreaded trackerSource;
     ofxFaceTrackerThreaded trackerDest;
+    ofxFaceTrackerThreaded savedTracker;
     
-    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask;//, finalSourceMouth;
+    cv::Mat srcSaved;
+    
+    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask, cloneSecondMask,destinationFaceMaskFbo;
+    ofFbo cloneSecondFbo;
     ofShader maskShader;
     ofTessellator tess;
     
-    Clone clone;
+    Clone clone, cloneSecond;
+    faceSwap faceSwapper;
     
     imageSave imageSaver;
     int saverTracker; bool lastFound; bool savedForTracker;
     
     int x,y;
     
+    ExpressionClassifier classifier;
+    
     void setup();
     void update(cv::Mat& source, cv::Mat& dest);
-    void draw(ofTexture& source, ofTexture& destination);
+    void draw(ofTexture& source, ofTexture& destination, cv::Mat& dest);
     
     void keyPressed(int key);
 };
