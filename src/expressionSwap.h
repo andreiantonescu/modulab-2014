@@ -23,7 +23,7 @@ public:
     
     cv::Mat srcSaved;
     
-    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask, cloneSecondMask,destinationFaceMaskFbo;
+    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask, cloneSecondMask,destinationFaceMaskFbo, nonSmilingFbo;
     ofFbo cloneSecondFbo;
     ofShader maskShader;
     ofTessellator tess;
