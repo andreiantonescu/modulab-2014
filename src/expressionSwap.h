@@ -19,6 +19,7 @@ public:
     
     ofxFaceTrackerThreaded trackerSource;
     ofxFaceTrackerThreaded trackerDest;
+    ofxFaceTrackerThreaded trackerNonSmiling;
     ofxFaceTrackerThreaded savedTracker;
     
     cv::Mat srcSaved;
@@ -28,12 +29,14 @@ public:
     ofShader maskShader;
     ofTessellator tess;
     
+    ofMesh camMesh;
+    
     Clone clone, cloneSecond;
     faceSwap faceSwapper;
     
     imageSave imageSaver;
     int saverTracker; bool lastFound; bool savedForTracker;
-    
+    ofTexture destinationNonSmiling;
     int x,y;
     
     ExpressionClassifier classifier;

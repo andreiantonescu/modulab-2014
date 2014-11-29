@@ -23,20 +23,15 @@ void faceSwap::setup(){
 }
 
 // two versions of this, one with video
-void faceSwap::updateWithMesh(cv::Mat& destFace, string face, ofxFaceTrackerThreaded& destTracker){ // faceSource ?!
+void faceSwap::updateWithMesh(ofTexture& destFace, ofImage& image, ofxFaceTrackerThreaded& destTracker){ // faceSource ?!
     
-    src = cv::imread(face);
+    src = ofxCv::toCv(image);
     cv::cvtColor(src, src, CV_BGR2RGB);
     cv::Mat srcProcessed = initialFramePreproc(src);
     
     srcTracker.update(src);
     if(srcTracker.getFound()){
         srcPoints = srcTracker.getImagePoints();}
-    
-    //
-    
-    cv::Mat camDest = initialFramePreproc(destFace);
-    camTracker.update(camDest);
     
     cloneReady = camTracker.getFound();
     if(cloneReady) {
@@ -83,12 +78,7 @@ void faceSwap::updateWithMesh(cv::Mat& destFace, string face, ofxFaceTrackerThre
         
         clone.setStrength(24);
         
-        ofPixels tempDest;
-        ofxCv::toOf(destFace, tempDest);
-        ofImage destFaceImage;
-        destFaceImage.setFromPixels(tempDest);
-        
-        clone.update(srcFbo.getTextureReference(), destFaceImage.getTextureReference(), maskFbo.getTextureReference());
+        clone.update(srcFbo.getTextureReference(), destFace, maskFbo.getTextureReference());
     }
 }
 

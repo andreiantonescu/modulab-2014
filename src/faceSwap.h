@@ -25,7 +25,7 @@ public:
     ofFbo srcFbo, maskFbo;
     
     void setup(); // to change, should not receive face path - just for testing
-    void updateWithMesh(cv::Mat& destFace, string face, ofxFaceTrackerThreaded& destTracker);
+    void updateWithMesh(ofTexture& destFace, ofImage& image, ofxFaceTrackerThreaded& destTracker);
     void draw();
 };
 
