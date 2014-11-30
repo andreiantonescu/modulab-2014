@@ -13,6 +13,7 @@
 #include "ofxFaceTrackerThreaded.h"
 #include "ofxPS3EyeGrabber.h"
 #include "ofxUI.h"
+#include "ofxGaussianBlur.h"
 #include "helpers.h"
 #include "constants.h"
 #include "Clone.h"

@@ -24,10 +24,12 @@ public:
     
     cv::Mat srcSaved;
     
-    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask, cloneSecondMask,destinationFaceMaskFbo, nonSmilingFbo;
+    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask, cloneSecondMask,destinationFaceMaskFbo, nonSmilingFbo, mouthMaskFboBlurred;
     ofFbo cloneSecondFbo;
     ofShader maskShader;
     ofTessellator tess;
+    
+    ofxGaussianBlur gaussianBlur;
     
     ofMesh camMesh;
     

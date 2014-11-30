@@ -7,6 +7,7 @@ VideoCapture capture;
 void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
+    ofEnableAlphaBlending();
 	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
     
     // camera setup -- pseye and standard webcam
