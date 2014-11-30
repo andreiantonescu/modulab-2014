@@ -33,10 +33,15 @@ void expressionSwap::setup(){
     destinationFaceMaskFbo.allocate(camWidth, camHeight);
     nonSmilingFbo.allocate(camWidth,camHeight);
     mouthMaskFboBlurred.allocate(camWidth, camHeight);
+    mouthMaskFboToBlur.allocate(camWidth, camHeight);
+    destinationBlurred.allocate(camWidth, camHeight);
+    finalMouth.allocate(camWidth,camHeight);
+    destinationFaceFboForBlur.allocate(camWidth,camHeight);
+    skinFbo.allocate(camWidth, camHeight);
     
     gaussianBlur.allocate(camWidth,camHeight);
     gaussianBlur.setPasses(10);
-    gaussianBlur.setRadius(25);
+    gaussianBlur.setRadius(20);
     
     clone.setup(camWidth, camHeight);
     cloneSecond.setup(camWidth, camHeight);
@@ -57,6 +62,8 @@ void expressionSwap::setup(){
     faceSwapper.setup();
     
     classifier.load("Expressions");
+    
+    skin.loadImage("/Users/andreiantonescu/Desktop/skin2.png");
 }
 
 void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
@@ -87,7 +94,7 @@ cv::Mat temporaryNonSmilingMat;
 void expressionSwap::draw(ofTexture& source, ofTexture& destination){
     
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-        destination.draw(0, 0); // draw destination
+//        destination.draw(0, 0); // draw destination
     
         // get tracker of last non smiling frame
         // then use that to get the correct texture on
@@ -111,6 +118,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         ofMesh outerMouthMesh;
         tess.tessellateToMesh(innerMouth,OF_POLY_WINDING_POSITIVE, innerMouthMesh);
         tess.tessellateToMesh(outerMouth,OF_POLY_WINDING_POSITIVE, outerMouthMesh);
+    
 //    fill inner mouth
         ofMesh face = trackerSource.getObjectMesh();
         int vertices[8]={48,60,61,62,54,63,64,65}; // inner mouth vertices
@@ -119,13 +127,25 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
                 for(int z=0; z<8; z++)
                     face.addTriangle(vertices[i], vertices[j], vertices[z]);
     
+//    fill inner mouth dest
+        ofMesh faceDest = trackerDest.getObjectMesh();
+        int verticesDest[8]={48,60,61,62,54,63,64,65}; // inner mouth vertices
+        for(int i=0; i<8; i++)
+            for(int j=0; j<8; j++)
+                for(int z=0; z<8; z++)
+                    faceDest.addTriangle(verticesDest[i], verticesDest[j], verticesDest[z]);
+    
         ofVec2f toDraw = trackerDest.getPosition(); // final place to put the new mouth
     
+        ofMesh camMesh = trackerDest.getImageMesh();
+        camMesh.clearTexCoords();
+        camMesh.addTexCoords(trackerSource.getImagePoints());
+        
 //      get source face fbo
         sourceFaceFbo.begin();
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-        ofClear(0, 0, 0);
+        ofClear(255);
         ofTranslate(toDraw);
         ofScale(trackerSource.getScale(),trackerSource.getScale(),trackerSource.getScale());
         ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
@@ -136,14 +156,6 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         ofPopMatrix();
         sourceFaceFbo.end();
     
-//      draw dest face - put the saved face from pics here
-////////////
-        ofPushMatrix();
-        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-        ofTranslate(ofVec2f(trackerDest.getPosition()));
-        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
-        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        destination.bind();
         ofMesh subMesh;
         subMesh = trackerDest.getObjectMesh();
         for(int i=27; i<36; i++){
@@ -152,53 +164,17 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         for(int i=48; i<66; i++){
             subMesh.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
         }
-//        subMesh.draw();
-        ofSetColor(255);
-        destination.unbind();
-        ofPopMatrix();
-
-//      get destination face fbo
-////////////
-        destinationFaceFbo.begin();
-        ofPushMatrix();
-        ofClear(0,0,0);
-        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-        ofTranslate(ofVec2f(trackerDest.getPosition()));
-        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
-        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        destination.bind();
-        subMesh.draw();
-        ofSetColor(255);
-        destination.unbind();
-        ofPopMatrix();
-        destinationFaceFbo.end();
-
-//        subMesh.clearTexCoords();
-//        subMesh.addTexCoords(trackerNonSmiling.getImagePoints());
-//        ofPushMatrix();
-//        ofTranslate(ofVec2f(trackerDest.getPosition()));
-//        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
-//        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-//        testing.bind();
-//        subMesh.draw();
-//        testing.unbind();
-//        ofPopMatrix();
     
-//        nonSmilingFbo.begin();
-//        ofPushMatrix();
-//        ofClear(0,0,0);
-//        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-////        ofTranslate(ofVec2f(trackerNonSmiling.getPosition()));
-//        ofScale(trackerNonSmiling.getScale(),trackerNonSmiling.getScale(),trackerNonSmiling.getScale());
-////        ofxCv::applyMatrix(trackerNonSmiling.getRotationMatrix());
-//        testing.bind();
-//        trackerNonSmiling.getObjectMesh().draw();
-//        ofSetColor(255);
-//        testing.unbind();
-//        ofPopMatrix();
-//        nonSmilingFbo.end();
+        for(int i=27; i<36; i++){
+           faceDest.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
+        }
+        for(int i=48; i<66; i++){
+           faceDest.setVertex(i, trackerSource.getObjectMesh().getVertex(i));
+        }
     
-//    get mouth mask fbo from source face
+    
+    
+        //    get mouth mask fbo from source face
         mouthMaskFbo.begin();
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
@@ -209,37 +185,111 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         ofxCv::applyMatrix(trackerDest.getRotationMatrix());
         innerMouthMesh.draw();
         outerMouthMesh.draw();
-    
-        // to reconsider this as a mesh
-        ofRect(outerMouthMesh.getCentroid()-ofPoint(10,6.5),20,16);
-        ofCircle(-10,5,5);
-        ofCircle(10,5,5);
-
         ofPopMatrix();
         mouthMaskFbo.end();
-    
-        gaussianBlur.clear();
-        gaussianBlur.setTexture(mouthMaskFbo.getTextureReference());
-        gaussianBlur.update();
-    
-        mouthMaskFboBlurred.begin();
+        
+        //    define mask area for blurring
+        mouthMaskFboToBlur.begin();
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
         ofClear(0, 0, 0);
+        ofTranslate(toDraw);
+        ofScale(trackerSource.getScale(), trackerSource.getScale(),trackerSource.getScale());
+        ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+        ofRect(outerMouthMesh.getCentroid()-ofPoint(7,7),14,16.5);
+//        ofCircle(-10,5,5);
+//        ofCircle(10,5,5);
+        ofPopMatrix();
+        mouthMaskFboToBlur.end();
+        
+        gaussianBlur.clear();
+        gaussianBlur.setTexture(mouthMaskFboToBlur.getTextureReference());
+        gaussianBlur.update();
+        
+        mouthMaskFboBlurred.begin();
+        ofPushMatrix();
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+        ofClear(255);
         gaussianBlur.draw();
         ofPopMatrix();
         mouthMaskFboBlurred.end();
+
+//      get destination face fbo
+////////////
+        destinationFaceFbo.begin();
+        ofPushMatrix();
+        ofClear(255);
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+        ofTranslate(ofVec2f(trackerDest.getPosition()));
+        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+        destination.bind();
+        subMesh.draw();
+        ofSetColor(255);
+        destination.unbind();
+        ofPopMatrix();
+        destinationFaceFbo.end();
+    
+        skinFbo.begin();
+        ofPushMatrix();
+        ofClear(255);
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+        ofTranslate(ofVec2f(trackerDest.getPosition()));
+        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+        skin.bind();
+        faceDest.draw();
+        ofSetColor(255);
+        skin.unbind();
+        ofPopMatrix();
+        skinFbo.end();
+    
+        destinationFaceFboForBlur.begin();
+        ofPushMatrix();
+        ofClear(0,0,0);
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+        ofTranslate(ofVec2f(trackerDest.getPosition()));
+        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+        subMesh.draw();
+        ofSetColor(255);
+        ofPopMatrix();
+        destinationFaceFboForBlur.end();
     
         cloneMask.begin();
         ofClear(255);
         cloneMask.end();
+    
+        //    draw outer mouth with color transfer
         clone.setStrength(cloneStrength);
         clone.update(sourceFaceFbo.getTextureReference(), destinationFaceFbo.getTextureReference(), cloneMask.getTextureReference());
-
-////        draw shader
+        finalMouth.begin();
+        ofClear(0, 0, 0);
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
-        ofTranslate(x,y);
+        maskShader.begin();
+        maskShader.setUniform1f( "time", ofGetElapsedTimef() );
+        maskShader.setUniformTexture( "texture1", mouthMaskFbo.getTextureReference(), 1);
+        ofSetColor( 255, 255, 255 );
+        clone.draw(0, 0);
+        maskShader.end();
+        ofPopMatrix();
+        finalMouth.end();
+    
+        cloneMask.begin();
+        ofClear(255);
+        cloneMask.end();
+    
+        // get blurred face
+        clone.setStrength(30);
+        clone.update(skinFbo.getTextureReference(), destinationFaceFbo.getTextureReference(), cloneMask.getTextureReference());
+        
+        destinationBlurred.begin();
+        ofClear(0, 0, 0);
+        destination.draw(0, 0);
+        ofPushMatrix();
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
         maskShader.begin();
         maskShader.setUniform1f( "time", ofGetElapsedTimef() );
         maskShader.setUniformTexture( "texture1", mouthMaskFboBlurred.getTextureReference(), 1);
@@ -247,6 +297,29 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         clone.draw(0, 0);
         maskShader.end();
         ofPopMatrix();
+        destinationBlurred.end();
+
+        destinationFaceFbo.draw(0,0);
+        destinationBlurred.draw(0, 0);
+    
+//        clone.draw(0, 0);
+    
+        destinationFaceFbo.begin();
+        ofPushMatrix();
+//        ofClear(0,0,0);
+        ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
+        ofTranslate(ofVec2f(trackerDest.getPosition()));
+        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+        destinationBlurred.getTextureReference().bind();
+        subMesh.draw();
+        ofSetColor(255);
+        destinationBlurred.getTextureReference().unbind();
+        ofPopMatrix();
+        destinationFaceFbo.end();
+
+        destinationFaceFbo.draw(0,0);
+        finalMouth.draw(0,0);
 }
 
 void expressionSwap::keyPressed(int key){

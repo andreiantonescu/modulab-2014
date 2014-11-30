@@ -24,7 +24,11 @@ public:
     
     cv::Mat srcSaved;
     
-    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask, cloneSecondMask,destinationFaceMaskFbo, nonSmilingFbo, mouthMaskFboBlurred;
+    ofFbo sourceFaceFbo, mouthMaskFbo, destinationFaceFbo, cloneMask, cloneSecondMask,destinationFaceMaskFbo, nonSmilingFbo, mouthMaskFboBlurred, mouthMaskFboToBlur;
+    ofFbo finalMouth;
+    ofFbo destinationFaceFboForBlur;
+    ofFbo skinFbo;
+    ofFbo destinationBlurred;
     ofFbo cloneSecondFbo;
     ofShader maskShader;
     ofTessellator tess;
@@ -32,6 +36,7 @@ public:
     ofxGaussianBlur gaussianBlur;
     
     ofMesh camMesh;
+    ofImage skin;
     
     Clone clone, cloneSecond;
     faceSwap faceSwapper;
