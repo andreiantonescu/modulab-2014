@@ -93,17 +93,17 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
         // get tracker of last non smiling frame
         // then use that to get the correct texture on
     
-        ofTexture destinationNonSmiling;
-        classifier.classify(trackerDest);
-        if(classifier.getProbability(2)<0.001 && classifier.getProbability(3)<0.001) {
-            ofPixels temporaryPixels;
-            destination.readToPixels(temporaryPixels);
-            testing.setFromPixels(temporaryPixels);
-  
-            temporaryNonSmilingMat = toCv(testing.getPixelsRef());
-            temporaryNonSmilingMat = initialFramePreproc(temporaryNonSmilingMat);
-            trackerNonSmiling.update(temporaryNonSmilingMat);
-        }
+//        ofTexture destinationNonSmiling;
+//        classifier.classify(trackerDest);
+//        if(classifier.getProbability(2)<0.001 && classifier.getProbability(3)<0.001) {
+//            ofPixels temporaryPixels;
+//            destination.readToPixels(temporaryPixels);
+//            testing.setFromPixels(temporaryPixels);
+//  
+//            temporaryNonSmilingMat = toCv(testing.getPixelsRef());
+//            temporaryNonSmilingMat = initialFramePreproc(temporaryNonSmilingMat);
+//            trackerNonSmiling.update(temporaryNonSmilingMat);
+//        }
     
 //    get inner and outer mouth meshes
         ofPolyline innerMouth = trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH);
@@ -209,7 +209,11 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
     
         innerMouthMesh.draw();
         outerMouthMesh.draw();
-        ofRect(outerMouthMesh.getCentroid()-ofPoint(10,5),20,15);
+    
+        // to reconsider this as a mesh
+        ofRect(outerMouthMesh.getCentroid()-ofPoint(10,6.5),20,14);
+        ofCircle(-10,5,5);
+        ofCircle(10,5,5);
 
         ofPopMatrix();
         mouthMaskFbo.end();
@@ -239,7 +243,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
         ofTranslate(x,y);
         maskShader.begin();
         maskShader.setUniform1f( "time", ofGetElapsedTimef() );
-        maskShader.setUniformTexture( "texture1", mouthMaskFbo.getTextureReference(), 1);
+        maskShader.setUniformTexture( "texture1", mouthMaskFboBlurred.getTextureReference(), 1);
         ofSetColor( 255, 255, 255 );
         ofPushMatrix();
         ofTranslate(toDraw);
@@ -248,10 +252,6 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
         ofPopMatrix();
         maskShader.end();
         ofPopMatrix();
-    
-//        trackerDest.draw();
-//        trackerDest.getImageMesh().drawWireframe();
-    
 }
 
 void expressionSwap::keyPressed(int key){
