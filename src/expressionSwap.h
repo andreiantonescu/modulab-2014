@@ -45,7 +45,7 @@ public:
     
     void setup();
     void update(cv::Mat& source, cv::Mat& dest);
-    void draw(ofTexture& source, ofTexture& destination, cv::Mat& dest);
+    void draw(ofTexture& source, ofTexture& destination);
     
     void keyPressed(int key);
 };

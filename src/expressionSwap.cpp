@@ -36,7 +36,7 @@ void expressionSwap::setup(){
     
     gaussianBlur.allocate(camWidth,camHeight);
     gaussianBlur.setPasses(10);
-    gaussianBlur.setRadius(20);
+    gaussianBlur.setRadius(25);
     
     clone.setup(camWidth, camHeight);
     cloneSecond.setup(camWidth, camHeight);
@@ -81,11 +81,10 @@ void expressionSwap::update(cv::Mat& source, cv::Mat& dest){
     trackerSource.update(sourcePreProc);
     trackerDest.update(destPreProc);
     
-    
 }
 ofImage testing;
 cv::Mat temporaryNonSmilingMat;
-void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& dest){
+void expressionSwap::draw(ofTexture& source, ofTexture& destination){
     
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
         destination.draw(0, 0); // draw destination
@@ -103,7 +102,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
 //            temporaryNonSmilingMat = toCv(testing.getPixelsRef());
 //            temporaryNonSmilingMat = initialFramePreproc(temporaryNonSmilingMat);
 //            trackerNonSmiling.update(temporaryNonSmilingMat);
-//        }
+////        }
     
 //    get inner and outer mouth meshes
         ofPolyline innerMouth = trackerSource.getObjectFeature(ofxFaceTrackerThreaded::INNER_MOUTH);
@@ -130,6 +129,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
         ofTranslate(toDraw);
         ofScale(trackerSource.getScale(),trackerSource.getScale(),trackerSource.getScale());
         ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
         source.bind();
         face.draw();
         source.unbind();
@@ -173,16 +173,16 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
         ofPopMatrix();
         destinationFaceFbo.end();
 
-        subMesh.clearTexCoords();
-        subMesh.addTexCoords(trackerNonSmiling.getImagePoints());
-        ofPushMatrix();
-        ofTranslate(ofVec2f(trackerDest.getPosition()));
-        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
-        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        testing.bind();
-        subMesh.draw();
-        testing.unbind();
-        ofPopMatrix();
+//        subMesh.clearTexCoords();
+//        subMesh.addTexCoords(trackerNonSmiling.getImagePoints());
+//        ofPushMatrix();
+//        ofTranslate(ofVec2f(trackerDest.getPosition()));
+//        ofScale(trackerDest.getScale(),trackerDest.getScale(),trackerDest.getScale());
+//        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
+//        testing.bind();
+//        subMesh.draw();
+//        testing.unbind();
+//        ofPopMatrix();
     
 //        nonSmilingFbo.begin();
 //        ofPushMatrix();
@@ -206,12 +206,12 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
         ofTranslate(toDraw);
         ofScale(trackerSource.getScale(), trackerSource.getScale(),trackerSource.getScale());
         ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
-    
+        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
         innerMouthMesh.draw();
         outerMouthMesh.draw();
     
         // to reconsider this as a mesh
-        ofRect(outerMouthMesh.getCentroid()-ofPoint(10,6.5),20,14);
+        ofRect(outerMouthMesh.getCentroid()-ofPoint(10,6.5),20,16);
         ofCircle(-10,5,5);
         ofCircle(10,5,5);
 
@@ -235,9 +235,8 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
         cloneMask.end();
         clone.setStrength(cloneStrength);
         clone.update(sourceFaceFbo.getTextureReference(), destinationFaceFbo.getTextureReference(), cloneMask.getTextureReference());
-    
-        destinationFaceFbo.draw(0, 0);
-//        draw shader
+
+////        draw shader
         ofPushMatrix();
         ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
         ofTranslate(x,y);
@@ -245,11 +244,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination, cv::Mat& de
         maskShader.setUniform1f( "time", ofGetElapsedTimef() );
         maskShader.setUniformTexture( "texture1", mouthMaskFboBlurred.getTextureReference(), 1);
         ofSetColor( 255, 255, 255 );
-        ofPushMatrix();
-        ofTranslate(toDraw);
-        ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        clone.draw(-toDraw.x,-toDraw.y);
-        ofPopMatrix();
+        clone.draw(0, 0);
         maskShader.end();
         ofPopMatrix();
 }

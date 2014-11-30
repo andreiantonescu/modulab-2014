@@ -76,7 +76,7 @@ void ofApp::draw(){
         }
         if(debugMode){
             ofImage temp = cvToOF(srcTestMat);
-            expressionSwapper.draw(temp.getTextureReference(), cam.getTextureReference(), frame);
+            expressionSwapper.draw(temp.getTextureReference(), cam.getTextureReference());
 //            expressionSwapper.draw(cam.getTextureReference(), temp.getTextureReference());
         }
     }
