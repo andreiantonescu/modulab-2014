@@ -197,7 +197,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         ofScale(trackerSource.getScale(), trackerSource.getScale(),trackerSource.getScale());
         ofScale(trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale(),trackerDest.getScale()/trackerSource.getScale());
         ofxCv::applyMatrix(trackerDest.getRotationMatrix());
-        ofRect(outerMouthMesh.getCentroid()-ofPoint(7,7),14,16.5);
+        ofRect(outerMouthMesh.getCentroid()-ofPoint(7,7),14,14);
 //        ofCircle(-10,5,5);
 //        ofCircle(10,5,5);
         ofPopMatrix();
@@ -277,9 +277,12 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         ofPopMatrix();
         finalMouth.end();
     
-        cloneMask.begin();
-        ofClear(255);
-        cloneMask.end();
+        //redraw destinationFaceFbo.
+        destinationFaceFbo.begin();
+//        ofClear(0, 0, 0);
+        destinationFaceFbo.draw(0, 0);
+        finalMouth.draw(0, 0);
+        destinationFaceFbo.end();
     
         // get blurred face
         clone.setStrength(30);
@@ -300,7 +303,7 @@ void expressionSwap::draw(ofTexture& source, ofTexture& destination){
         destinationBlurred.end();
 
         destinationFaceFbo.draw(0,0);
-        destinationBlurred.draw(0, 0);
+//        destinationBlurred.draw(0, 0);
     
 //        clone.draw(0, 0);
     
